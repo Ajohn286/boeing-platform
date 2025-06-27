@@ -7,13 +7,13 @@ import {
   AgentIcon, 
   ExpertIcon, 
   ModelIcon,
-  PredictiveMaintenanceIcon 
+  WealthIcon 
 } from "@/components/icons/PlatformIcon";
 import invisiblePlatformLogo from "@/assets/invisible-platform-logo.svg";
 
 const navigationItems = [
   { path: "/platform", label: "Platform", icon: PlatformIcon },
-  { path: "/predictive-maintenance", label: "Predictive Maintenance", icon: PredictiveMaintenanceIcon, highlight: true },
+  { path: "/wealth-management", label: "Wealth Manager", icon: WealthIcon, highlight: true },
   { path: "/data-environment", label: "Data Environment", icon: DataIcon },
   { path: "/process-builder", label: "Process Builder", icon: ProcessIcon },
   { path: "/agentic-engine", label: "Agentic Engine", icon: AgentIcon },

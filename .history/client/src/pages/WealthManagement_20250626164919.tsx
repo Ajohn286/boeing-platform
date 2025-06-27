@@ -47,69 +47,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-// Type definitions
-interface EngineData {
-  current: number;
-  threshold: number;
-  trend: string;
-}
-
-interface EngineHealth {
-  vibration: EngineData;
-  egt: EngineData;
-  oilPressure: EngineData;
-  oilTemp: EngineData;
-  n1Speed: EngineData;
-  n2Speed: EngineData;
-}
-
-interface AircraftEngineHealth {
-  engine1: EngineHealth;
-  engine2: EngineHealth;
-}
-
-interface StructuralData {
-  current: number;
-  threshold: number;
-  trend: string;
-}
-
-interface AircraftStructuralHealth {
-  wingStress: StructuralData;
-  fuselageStress: StructuralData;
-  crackPropagation: StructuralData;
-  fatigueIndex: StructuralData;
-}
-
-interface FlightData {
-  avg: number;
-  last: number;
-  trend: string;
-}
-
-interface AircraftFlightData {
-  flightDuration: FlightData;
-  altitude: FlightData;
-  speed: FlightData;
-  fuelEfficiency: FlightData;
-}
-
-interface EnvironmentalData {
-  weatherConditions: string;
-  humidity: string;
-  temperature: string;
-  routeStressors: string[];
-  corrosionRisk: string;
-}
-
-interface PredictiveData {
-  engineFailureProbability: { [key: string]: number };
-  structuralFailureProbability: { [key: string]: number };
-  recommendedMaintenance: string;
-  riskFactors: string[];
-  recommendations: string[];
-}
-
 export default function PredictiveMaintenance() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAircraft, setSelectedAircraft] = useState<string | null>(null);
@@ -170,7 +107,7 @@ export default function PredictiveMaintenance() {
   ];
 
   // Engine health monitoring data
-  const engineHealthData: { [key: string]: AircraftEngineHealth } = {
+  const engineHealthData = {
     "A350-1000-001": {
       engine1: {
         vibration: { current: 0.8, threshold: 1.2, trend: "stable" },
@@ -192,7 +129,7 @@ export default function PredictiveMaintenance() {
   };
 
   // Structural health monitoring data
-  const structuralHealthData: { [key: string]: AircraftStructuralHealth } = {
+  const structuralHealthData = {
     "A350-1000-001": {
       wingStress: { current: 0.65, threshold: 0.8, trend: "stable" },
       fuselageStress: { current: 0.45, threshold: 0.7, trend: "stable" },
@@ -202,7 +139,7 @@ export default function PredictiveMaintenance() {
   };
 
   // Flight operational data
-  const flightOperationalData: { [key: string]: AircraftFlightData } = {
+  const flightOperationalData = {
     "A350-1000-001": {
       flightDuration: { avg: 8.5, last: 7.2, trend: "stable" },
       altitude: { avg: 35000, last: 38000, trend: "stable" },
@@ -212,7 +149,7 @@ export default function PredictiveMaintenance() {
   };
 
   // Environmental data
-  const environmentalData: { [key: string]: EnvironmentalData } = {
+  const environmentalData = {
     "A350-1000-001": {
       weatherConditions: "Clear",
       humidity: "45%",
@@ -290,7 +227,7 @@ export default function PredictiveMaintenance() {
   ];
 
   // Predictive analytics
-  const predictiveAnalytics: { [key: string]: PredictiveData } = {
+  const predictiveAnalytics = {
     "A350-1000-001": {
       engineFailureProbability: { "7d": 0.02, "30d": 0.08, "90d": 0.15 },
       structuralFailureProbability: { "7d": 0.01, "30d": 0.03, "90d": 0.07 },
@@ -579,20 +516,17 @@ export default function PredictiveMaintenance() {
                     {Object.entries(engineHealthData[selectedAircraft]).map(([engine, data]) => (
                       <div key={engine} className="border border-border rounded-lg p-3">
                         <h5 className="font-medium text-sm mb-2">{engine.toUpperCase()}</h5>
-                        {Object.entries(data).map(([metric, values]) => {
-                          const engineValues = values as EngineData;
-                          return (
-                            <div key={metric} className="flex justify-between items-center text-sm mb-1">
-                              <span className="capitalize">{metric.replace(/([A-Z])/g, ' $1')}</span>
-                              <div className="flex items-center gap-2">
-                                <span className={engineValues.current > engineValues.threshold * 0.8 ? "text-yellow-600" : "text-green-600"}>
-                                  {engineValues.current}
-                                </span>
-                                <span className="text-gray-400">/ {engineValues.threshold}</span>
-                              </div>
+                        {Object.entries(data).map(([metric, values]) => (
+                          <div key={metric} className="flex justify-between items-center text-sm mb-1">
+                            <span className="capitalize">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                            <div className="flex items-center gap-2">
+                              <span className={values.current > values.threshold * 0.8 ? "text-yellow-600" : "text-green-600"}>
+                                {values.current}
+                              </span>
+                              <span className="text-gray-400">/ {values.threshold}</span>
                             </div>
-                          );
-                        })}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>

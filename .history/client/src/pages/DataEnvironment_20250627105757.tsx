@@ -35,7 +35,6 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { PieChart } from "recharts";
 // @ts-ignore: No types for react-force-graph-3d
 import ForceGraph3D from 'react-force-graph-3d';
-import * as THREE from 'three';
 
 const airbusDataSources = [
   {
@@ -674,139 +673,8 @@ export default function DataEnvironment() {
       )}
       {tab === "quality" && (
         <div>
-          {/* Header and Description */}
-          <h2 className="text-2xl font-bold mb-1">Data Quality</h2>
-          <p className="text-gray-600 mb-6">Monitor, manage, and improve the quality of your data across the platform. Review rule execution, issues, and trends to ensure data reliability and compliance.</p>
-
-          {/* Summary Metrics */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl border p-5 flex flex-col items-start shadow-sm">
-              <div className="text-xs text-gray-500 mb-1">Records Checked</div>
-              <div className="text-2xl font-bold">18.2M</div>
-            </div>
-            <div className="bg-white rounded-xl border p-5 flex flex-col items-start shadow-sm">
-              <div className="text-xs text-gray-500 mb-1">Issues Found</div>
-              <div className="text-2xl font-bold text-orange-600">41,230</div>
-            </div>
-            <div className="bg-white rounded-xl border p-5 flex flex-col items-start shadow-sm">
-              <div className="text-xs text-gray-500 mb-1">Rules Run</div>
-              <div className="text-2xl font-bold">27</div>
-            </div>
-            <div className="bg-white rounded-xl border p-5 flex flex-col items-start shadow-sm">
-              <div className="text-xs text-gray-500 mb-1">% Issues Resolved</div>
-              <div className="text-2xl font-bold text-green-700">89%</div>
-            </div>
-          </div>
-
-          {/* Data Quality Rules Table */}
-          <div className="bg-white rounded-xl border p-6 mb-8 shadow-sm">
-            <div className="font-semibold mb-4">Data Quality Rules</div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-xs border">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="px-3 py-2 text-left font-semibold">Rule</th>
-                    <th className="px-3 py-2 text-left font-semibold">Type</th>
-                    <th className="px-3 py-2 text-left font-semibold">Status</th>
-                    <th className="px-3 py-2 text-left font-semibold">Last Run</th>
-                    <th className="px-3 py-2 text-left font-semibold">Affected Records</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-3 py-2">Timeliness Check</td>
-                    <td className="px-3 py-2">System</td>
-                    <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span></td>
-                    <td className="px-3 py-2">2024-06-01 09:12</td>
-                    <td className="px-3 py-2">1,200</td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">Completeness Validation</td>
-                    <td className="px-3 py-2">System</td>
-                    <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span></td>
-                    <td className="px-3 py-2">2024-06-01 09:12</td>
-                    <td className="px-3 py-2">2,340</td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">Schema Validation</td>
-                    <td className="px-3 py-2">System</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">In Progress</span></td>
-                    <td className="px-3 py-2">2024-06-01 09:10</td>
-                    <td className="px-3 py-2">1,100</td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">Customer ID Validation</td>
-                    <td className="px-3 py-2">Business</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">In Progress</span></td>
-                    <td className="px-3 py-2">2024-06-01 08:55</td>
-                    <td className="px-3 py-2">900</td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">Duplicate Detection</td>
-                    <td className="px-3 py-2">System</td>
-                    <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span></td>
-                    <td className="px-3 py-2">2024-06-01 08:30</td>
-                    <td className="px-3 py-2">1,800</td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">Claim Amount Range Check</td>
-                    <td className="px-3 py-2">Business</td>
-                    <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span></td>
-                    <td className="px-3 py-2">2024-06-01 08:10</td>
-                    <td className="px-3 py-2">1,050</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Recent Issues Table */}
-          <div className="bg-white rounded-xl border p-6 shadow-sm">
-            <div className="font-semibold mb-4">Recent Data Quality Issues</div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-xs border">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="px-3 py-2 text-left font-semibold">Timestamp</th>
-                    <th className="px-3 py-2 text-left font-semibold">Severity</th>
-                    <th className="px-3 py-2 text-left font-semibold">Rule</th>
-                    <th className="px-3 py-2 text-left font-semibold">Dataset</th>
-                    <th className="px-3 py-2 text-left font-semibold">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="px-3 py-2">2024-06-01 09:12</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">Medium</span></td>
-                    <td className="px-3 py-2">Schema Validation</td>
-                    <td className="px-3 py-2">Aircraft Maintenance</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">Open</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">2024-06-01 09:10</td>
-                    <td className="px-3 py-2"><span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-semibold">High</span></td>
-                    <td className="px-3 py-2">Customer ID Validation</td>
-                    <td className="px-3 py-2">Supplier Contracts</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">Open</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">2024-06-01 08:55</td>
-                    <td className="px-3 py-2"><span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-semibold">Low</span></td>
-                    <td className="px-3 py-2">Duplicate Detection</td>
-                    <td className="px-3 py-2">Inventory</td>
-                    <td className="px-3 py-2"><span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Resolved</span></td>
-                  </tr>
-                  <tr>
-                    <td className="px-3 py-2">2024-06-01 08:30</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">Medium</span></td>
-                    <td className="px-3 py-2">Timeliness Check</td>
-                    <td className="px-3 py-2">Sensor Data</td>
-                    <td className="px-3 py-2"><span className="bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">Open</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <h2 className="text-2xl font-bold mb-2">Data Quality</h2>
+          <p className="text-gray-600">Your data quality content here.</p>
         </div>
       )}
     </div>
@@ -831,38 +699,12 @@ function OntologyView() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Set background color to white (using three.js import)
+  // Set background color to white
   useEffect(() => {
     if (fgRef.current) {
-      fgRef.current.scene().background = new THREE.Color('#fff');
+      fgRef.current.backgroundColor('#fff');
     }
   }, [graphWidth]);
-
-  // Custom node label as a sprite for better visibility
-  function createNodeLabelSprite(text: string) {
-    const canvas = document.createElement('canvas');
-    const size = 256;
-    canvas.width = size;
-    canvas.height = size / 2;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, size, size / 2);
-      ctx.font = 'bold 32px Sans-Serif';
-      ctx.fillStyle = '#222';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, size / 2, size / 4);
-      ctx.strokeStyle = '#bbb';
-      ctx.strokeRect(0, 0, size, size / 2);
-    }
-    const texture = new THREE.Texture(canvas);
-    texture.needsUpdate = true;
-    const material = new THREE.SpriteMaterial({ map: texture, depthWrite: false });
-    const sprite = new THREE.Sprite(material);
-    sprite.scale.set(32, 16, 1);
-    return sprite;
-  }
 
   const graphData = {
     nodes: airbusEntities.map(e => ({ ...e, val: e.id === selectedEntity ? 3 : 1 })),
@@ -920,20 +762,6 @@ function OntologyView() {
             onNodeClick={handleNodeClick}
             cooldownTicks={50}
             onEngineStop={() => {}}
-            nodeThreeObject={(node: any) => {
-              // Show a label above each node
-              const group = new THREE.Group();
-              // Node sphere
-              const geometry = new THREE.SphereGeometry(node.id === selectedEntity ? 10 : 7, 32, 32);
-              const material = new THREE.MeshStandardMaterial({ color: node.color });
-              const sphere = new THREE.Mesh(geometry, material);
-              group.add(sphere);
-              // Label sprite
-              const label = createNodeLabelSprite(node.name);
-              label.position.set(0, node.id === selectedEntity ? 14 : 11, 0);
-              group.add(label);
-              return group;
-            }}
           />
           {/* Zoom, filter, settings icons (static for now) */}
           <div className="absolute top-2 right-2 flex gap-2 z-10">

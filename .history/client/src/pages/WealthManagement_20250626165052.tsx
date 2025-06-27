@@ -579,20 +579,17 @@ export default function PredictiveMaintenance() {
                     {Object.entries(engineHealthData[selectedAircraft]).map(([engine, data]) => (
                       <div key={engine} className="border border-border rounded-lg p-3">
                         <h5 className="font-medium text-sm mb-2">{engine.toUpperCase()}</h5>
-                        {Object.entries(data).map(([metric, values]) => {
-                          const engineValues = values as EngineData;
-                          return (
-                            <div key={metric} className="flex justify-between items-center text-sm mb-1">
-                              <span className="capitalize">{metric.replace(/([A-Z])/g, ' $1')}</span>
-                              <div className="flex items-center gap-2">
-                                <span className={engineValues.current > engineValues.threshold * 0.8 ? "text-yellow-600" : "text-green-600"}>
-                                  {engineValues.current}
-                                </span>
-                                <span className="text-gray-400">/ {engineValues.threshold}</span>
-                              </div>
+                        {Object.entries(data).map(([metric, values]) => (
+                          <div key={metric} className="flex justify-between items-center text-sm mb-1">
+                            <span className="capitalize">{metric.replace(/([A-Z])/g, ' $1')}</span>
+                            <div className="flex items-center gap-2">
+                              <span className={values.current > values.threshold * 0.8 ? "text-yellow-600" : "text-green-600"}>
+                                {values.current}
+                              </span>
+                              <span className="text-gray-400">/ {values.threshold}</span>
                             </div>
-                          );
-                        })}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>

@@ -106,7 +106,7 @@ function Router() {
             <Route path="/agentic-engine" component={AgenticEngine} />
             <Route path="/expert-marketplace" component={ExpertMarketplace} />
             <Route path="/model-evaluations" component={ModelEvaluations} />
-            <Route path="/predictive-maintenance" component={WealthManagement} />
+            <Route path="/wealth-management" component={WealthManagement} />
             <Route component={NotFound} />
           </Switch>
         </div>

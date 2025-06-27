@@ -108,7 +108,7 @@ export function ModelIcon({ className = "", size = 24 }: IconProps) {
   );
 }
 
-export function PredictiveMaintenanceIcon({ className = "", size = 24 }: IconProps) {
+export function WealthIcon({ className = "", size = 24 }: IconProps) {
   return (
     <svg 
       width={size} 
@@ -118,12 +118,10 @@ export function PredictiveMaintenanceIcon({ className = "", size = 24 }: IconPro
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1"/>
-      <path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" fill="none"/>
-      <path d="M12 9v6" stroke="currentColor" strokeWidth="2"/>
-      <path d="M9 12h6" stroke="currentColor" strokeWidth="2"/>
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1"/>
+      <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="2" fill="none"/>
+      <circle cx="12" cy="8" r="2" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.3"/>
+      <path d="M12 6V4" stroke="currentColor" strokeWidth="2"/>
     </svg>
   );
 }
