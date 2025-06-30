@@ -108,7 +108,7 @@ function Router() {
             <Route path="/expert-marketplace" component={ExpertMarketplace} />
             <Route path="/model-evaluations" component={ModelEvaluations} />
             <Route path="/predictive-maintenance" component={WealthManagement} />
-            <Route path="/quality-inspection" component={QualityInspection} />
+            <Route path="/quality-inspection" element={<QualityInspection />} />
             <Route component={NotFound} />
           </Switch>
         </div>

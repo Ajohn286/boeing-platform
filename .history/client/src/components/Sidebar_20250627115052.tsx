@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { User, X } from "lucide-react";
+import { User, Database } from "lucide-react";
 import { 
   PlatformIcon, 
   DataIcon, 
@@ -14,7 +14,6 @@ import invisiblePlatformLogo from "@/assets/invisible-platform-logo.svg";
 const navigationItems = [
   { path: "/platform", label: "Platform", icon: PlatformIcon },
   { path: "/predictive-maintenance", label: "Predictive Maintenance", icon: PredictiveMaintenanceIcon, highlight: true },
-  { path: "/quality-inspection", label: "Quality Inspection", icon: PredictiveMaintenanceIcon, highlight: true },
   { path: "/data-environment", label: "Data Environment", icon: DataIcon },
   { path: "/process-builder", label: "Process Builder", icon: ProcessIcon },
   { path: "/agentic-engine", label: "Agentic Engine", icon: AgentIcon },
@@ -22,12 +21,7 @@ const navigationItems = [
   { path: "/model-evaluations", label: "Model Evaluations", icon: ModelIcon },
 ];
 
-interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function Sidebar() {
   const [location] = useLocation();
 
   const isActive = (path: string) => {
@@ -37,14 +31,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     return location === path;
   };
 
-  const handleLinkClick = () => {
-    onClose();
-  };
-
   return (
-    <aside className={`fixed lg:hidden inset-y-0 left-0 z-50 w-72 bg-sidebar text-sidebar-foreground transform transition-transform duration-300 ease-in-out ${
-      isOpen ? 'translate-x-0' : '-translate-x-full'
-    }`}>
+    <aside className="hidden lg:flex w-72 bg-sidebar text-sidebar-foreground flex-col">
       <div className="flex flex-col h-full">
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
@@ -55,13 +43,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               className="h-8"
             />
           </div>
-          {/* Mobile Close Button */}
-          <button 
-            onClick={onClose}
-            className="text-gray-400 hover:text-white"
-          >
-            <X className="h-6 w-6" />
-          </button>
         </div>
         
         {/* Navigation */}
@@ -71,14 +52,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               const Icon = item.icon;
               return (
                 <li key={item.path}>
-                  <Link href={item.path} 
-                    onClick={handleLinkClick}
-                    className={`flex items-center px-3 py-2.5 rounded-lg nav-item-hover ${
-                      isActive(item.path) 
-                        ? 'active-nav' 
-                        : 'text-gray-300'
-                    }`}
-                  >
+                  <Link href={item.path} className={`flex items-center px-3 py-2.5 rounded-lg nav-item-hover ${
+                    isActive(item.path) 
+                      ? 'active-nav' 
+                      : 'text-gray-300'
+                  } ${item.highlight ? 'relative' : ''}`}>
                     <Icon className="w-5 h-5 mr-3" />
                     <span className="font-medium">{item.label}</span>
                     {item.highlight && (
