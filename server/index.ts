@@ -36,7 +36,12 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
+// Initialize the app for both local development and Vercel
+let isInitialized = false;
+
+export async function initializeApp() {
+  if (isInitialized) return;
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -71,4 +76,14 @@ app.use((req, res, next) => {
       log(`serving on port ${port}`);
     });
   }
-})();
+  
+  isInitialized = true;
+}
+
+// Initialize immediately for local development
+if (!process.env.VERCEL) {
+  initializeApp();
+}
+
+// Export the app for Vercel
+export default app;
