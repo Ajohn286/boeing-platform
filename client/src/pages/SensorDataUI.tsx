@@ -1,22 +1,23 @@
 *******************
 # Project        : Airbus Platform LHM
 # File           : client/src/pages/SensorDataUI.tsx
-# Version        : v1.0  Last update: 01/15/2025 15:30 EST
+# Version        : v2.0  Last update: 01/15/2025 15:45 EST
 # Status         : Supports: UV | PNP
 # Classification : CUI//SP-CTI
-# Purpose        : Real-time sensor monitoring with AI anomaly detection
+# Purpose        : Real-time sensor monitoring with NASA turbofan engine data
 # Workflow       : MAIN
 # Core Module    : yes
-# App Functionality : [sensor monitoring, anomaly detection, data visualization]
+# App Functionality : [sensor monitoring, anomaly detection, real data visualization]
 # Dependencies
 #   * Called by       : App.tsx routing
-#   * Calls           : /data/sensor-config.json, /data/sensor-readings.json
+#   * Calls           : /data/turbofan-columns.json, /data/turbofan-sample.txt
 #   * Libraries       : React, Lucide Icons, Tailwind CSS
-#   * Infrastructure  : Public data folder
+#   * Infrastructure  : Public data folder, NASA C-MAPSS dataset
 # Change Log
+#   * v2.0 (01/15/2025): Updated to use real NASA turbofan engine sensor data
 #   * v1.0 (01/15/2025): Initial creation with SAIC styling and data integration
-# Description     : Aircraft sensor monitoring dashboard with real-time data visualization,
-#                   threshold monitoring, anomaly detection, and AI agent integration
+# Description     : Aircraft sensor monitoring dashboard using real NASA C-MAPSS turbofan
+#                   engine sensor data with 21 sensors, threshold monitoring, and AI agent integration
 *******************
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -33,35 +34,31 @@ import {
   AlertTriangle,
   Pause,
   RotateCcw,
-  Settings
+  Settings,
+  Database
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Type definitions
-interface SensorConfig {
-  id: string;
+interface TurbofanColumn {
+  index: number;
   name: string;
-  type: string;
-  unit: string;
-  location: string;
-  thresholds: {
+  description: string;
+  type: 'identifier' | 'time' | 'setting' | 'sensor';
+  unit?: string;
+  thresholds?: {
     min: number;
     max: number;
     critical: number;
   };
-  calibration: {
-    date: string;
-    accuracy: string;
-    nextDue: string;
-  };
 }
 
-interface SensorReading {
-  timestamp: string;
-  sensor_id: string;
-  value: number;
-  status: string;
+interface TurbofanDataPoint {
+  unitNumber: number;
+  timeCycles: number;
+  operationalSettings: number[];
+  sensorMeasurements: number[];
 }
 
 interface SensorData {
@@ -71,7 +68,7 @@ interface SensorData {
   unit: string;
   status: 'normal' | 'warning' | 'critical';
   timestamp: string;
-  config: SensorConfig;
+  column: TurbofanColumn;
   raw: any;
 }
 
@@ -94,108 +91,117 @@ const SensorDataUI: React.FC = () => {
   const [agentMessages, setAgentMessages] = useState<AgentMessage[]>([]);
   const [flaggedSensors, setFlaggedSensors] = useState(new Set<string>());
   const [lastUpdate, setLastUpdate] = useState(new Date());
-  const [sensorConfigs, setSensorConfigs] = useState<SensorConfig[]>([]);
+  const [turbofanColumns, setTurbofanColumns] = useState<TurbofanColumn[]>([]);
+  const [turbofanData, setTurbofanData] = useState<TurbofanDataPoint[]>([]);
+  const [currentDataIndex, setCurrentDataIndex] = useState(0);
+  const [currentEngine, setCurrentEngine] = useState(1);
   const scanInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Load sensor configuration from data folder
+  // Load turbofan column definitions
   useEffect(() => {
-    const loadSensorConfig = async () => {
+    const loadTurbofanConfig = async () => {
       try {
-        const response = await fetch('/data/sensor-config.json');
+        const response = await fetch('/data/turbofan-columns.json');
         const config = await response.json();
-        setSensorConfigs(config.sensors);
+        setTurbofanColumns(config.columns);
       } catch (error) {
-        console.error('Failed to load sensor config:', error);
+        console.error('Failed to load turbofan config:', error);
       }
     };
     
-    loadSensorConfig();
+    loadTurbofanConfig();
   }, []);
 
-  // Generate sensor data based on config
-  const generateSensorData = () => {
-    if (sensorConfigs.length === 0) return;
+  // Load real turbofan data
+  useEffect(() => {
+    const loadTurbofanData = async () => {
+      try {
+        const response = await fetch('/data/turbofan-sample.txt');
+        const text = await response.text();
+        const lines = text.trim().split('\n');
+        
+        const parsedData: TurbofanDataPoint[] = lines.map(line => {
+          const values = line.trim().split(/\s+/).map(Number);
+          return {
+            unitNumber: values[0],
+            timeCycles: values[1],
+            operationalSettings: values.slice(2, 5),
+            sensorMeasurements: values.slice(5)
+          };
+        });
+        
+        setTurbofanData(parsedData);
+      } catch (error) {
+        console.error('Failed to load turbofan data:', error);
+      }
+    };
+    
+    loadTurbofanData();
+  }, []);
+
+  // Process real turbofan sensor data
+  const processRealSensorData = () => {
+    if (turbofanColumns.length === 0 || turbofanData.length === 0) return;
+    
+    // Get current data point
+    const dataPoint = turbofanData[currentDataIndex % turbofanData.length];
+    if (!dataPoint) return;
     
     const timestamp = new Date();
     const newFlagged = new Set<string>();
     
-    const newData: SensorData[] = sensorConfigs.map((config) => {
-      // Generate realistic values based on sensor type
-      let baseValue: number;
-      let variance: number;
+    // Filter only sensor columns (not identifiers, time, or settings)
+    const sensorColumns = turbofanColumns.filter(col => col.type === 'sensor');
+    
+    const newData: SensorData[] = sensorColumns.slice(0, 8).map((column, index) => {
+      // Map column index to actual data array position
+      const dataIndex = column.index - 6; // Subtract 6 because sensors start at column 6
+      const value = dataPoint.sensorMeasurements[dataIndex] || 0;
       
-      switch (config.type) {
-        case 'temperature':
-          baseValue = 72;
-          variance = 5;
-          break;
-        case 'pressure':
-          baseValue = 3000;
-          variance = 100;
-          break;
-        case 'vibration':
-          baseValue = 0.5;
-          variance = 0.2;
-          break;
-        case 'flow':
-          baseValue = 120;
-          variance = 10;
-          break;
-        case 'rotation':
-          baseValue = 3000;
-          variance = 200;
-          break;
-        case 'humidity':
-          baseValue = 45;
-          variance = 10;
-          break;
-        case 'electrical':
-          baseValue = 120;
-          variance = 5;
-          break;
-        default:
-          baseValue = 100;
-          variance = 10;
-      }
-      
-      const value = baseValue + (Math.random() - 0.5) * variance;
-      
-      // Check thresholds
-      const exceedsThreshold = value > config.thresholds.max || value < config.thresholds.min;
-      const isCritical = value > config.thresholds.critical;
-      
-      // Simulate anomaly
-      const isAnomaly = (Math.random() < 0.05 || isCritical) && !anomalyDetected;
-      
-      if (exceedsThreshold) {
-        newFlagged.add(config.id);
-      }
-      
-      if (isAnomaly && !anomalyDetected) {
-        setAnomalyDetected(true);
-        triggerAgenticFlow(config.name, value, config.thresholds);
+      // Check thresholds if they exist
+      let status: 'normal' | 'warning' | 'critical' = 'normal';
+      if (column.thresholds) {
+        const exceedsThreshold = value > column.thresholds.max || value < column.thresholds.min;
+        const isCritical = value > column.thresholds.critical;
+        
+        if (isCritical) {
+          status = 'critical';
+        } else if (exceedsThreshold) {
+          status = 'warning';
+        }
+        
+        if (exceedsThreshold) {
+          newFlagged.add(`sensor-${index}`);
+        }
+        
+        // Simulate anomaly detection for critical values
+        const isAnomaly = isCritical && !anomalyDetected;
+        if (isAnomaly) {
+          setAnomalyDetected(true);
+          triggerAgenticFlow(column.name, value, column.thresholds);
+        }
       }
       
       return {
-        id: config.id,
-        name: config.name,
+        id: `sensor-${index}`,
+        name: column.name,
         value: value.toFixed(2),
-        unit: config.unit,
-        status: isCritical ? 'critical' : exceedsThreshold ? 'warning' : 'normal',
+        unit: column.unit || '',
+        status,
         timestamp: timestamp.toISOString(),
-        config,
+        column,
         raw: {
-          sensor_id: config.id,
-          type: config.type,
+          sensor_id: `TURBO-${column.index}`,
+          type: column.name,
           value: value,
-          unit: config.unit,
+          unit: column.unit,
           timestamp: timestamp.getTime(),
-          location: config.location,
-          calibration_date: config.calibration.date,
-          accuracy: config.calibration.accuracy,
-          threshold_min: config.thresholds.min,
-          threshold_max: config.thresholds.max,
-          threshold_critical: config.thresholds.critical
+          engine_unit: dataPoint.unitNumber,
+          cycle: dataPoint.timeCycles,
+          description: column.description,
+          threshold_min: column.thresholds?.min,
+          threshold_max: column.thresholds?.max,
+          threshold_critical: column.thresholds?.critical
         }
       };
     });
@@ -206,6 +212,9 @@ const SensorDataUI: React.FC = () => {
     
     // Keep history for raw data view
     setRawDataHistory(prev => [...prev.slice(-100), ...newData.map(s => s.raw)]);
+    
+    // Move to next data point
+    setCurrentDataIndex(prev => prev + 1);
   };
 
   // Trigger agentic flow when anomaly detected
@@ -223,13 +232,13 @@ const SensorDataUI: React.FC = () => {
       { 
         id: '1',
         role: 'agent', 
-        content: `Anomaly detected: ${sensorName} reading ${value.toFixed(2)} exceeds threshold of ${threshold.max}. Initiating diagnostic protocol...`, 
+        content: `🚨 CRITICAL ANOMALY: ${sensorName} reading ${value.toFixed(2)} exceeds critical threshold of ${threshold.critical}. This is from NASA C-MAPSS turbofan engine data indicating potential failure progression.`, 
         timestamp: new Date() 
       },
       { 
         id: '2',
         role: 'agent', 
-        content: 'Analyzing historical patterns and cross-referencing with maintenance logs...', 
+        content: 'Analyzing real engine degradation patterns from NASA dataset. Cross-referencing with historical failure modes: HPC Degradation and Fan Degradation...', 
         timestamp: new Date() 
       }
     ];
@@ -240,7 +249,7 @@ const SensorDataUI: React.FC = () => {
       setAgentMessages(prev => [...prev, {
         id: '3',
         role: 'agent',
-        content: 'Analysis complete. Critical deviation pattern identified. Launching visual inspection interface...',
+        content: 'Analysis complete. Pattern matches known engine deterioration trajectory from turbofan run-to-failure simulation. Estimated RUL (Remaining Useful Life) critically low. Initiating emergency protocols...',
         timestamp: new Date()
       }]);
       
@@ -250,7 +259,7 @@ const SensorDataUI: React.FC = () => {
         setAgentMessages(prev => [...prev, {
           id: '4',
           role: 'agent',
-          content: 'Video feed activated. Please review the highlighted area for potential issues.',
+          content: 'Visual inspection activated. Engine components showing signs of degradation consistent with NASA simulation data. Immediate maintenance required.',
           timestamp: new Date()
         }]);
       }, 1500);
@@ -262,7 +271,7 @@ const SensorDataUI: React.FC = () => {
     const dataStr = JSON.stringify(rawDataHistory, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `sensor_data_${new Date().toISOString()}.json`;
+    const exportFileDefaultName = `turbofan_sensor_data_${new Date().toISOString()}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -277,21 +286,22 @@ const SensorDataUI: React.FC = () => {
     setShowVideo(false);
     setAgentMessages([]);
     setIsScanning(true);
+    setCurrentDataIndex(0);
   };
 
   useEffect(() => {
     // Simulate connection establishment
     setTimeout(() => setConnectionStatus('connected'), 1000);
     
-    // Start sensor data simulation
-    if (isScanning && connectionStatus === 'connected' && sensorConfigs.length > 0) {
-      scanInterval.current = setInterval(generateSensorData, 2000);
+    // Start real data processing
+    if (isScanning && connectionStatus === 'connected' && turbofanColumns.length > 0 && turbofanData.length > 0) {
+      scanInterval.current = setInterval(processRealSensorData, 3000);
     }
     
     return () => {
       if (scanInterval.current) clearInterval(scanInterval.current);
     };
-  }, [isScanning, connectionStatus, sensorConfigs]);
+  }, [isScanning, connectionStatus, turbofanColumns, turbofanData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
@@ -307,8 +317,21 @@ const SensorDataUI: React.FC = () => {
         <header className="mb-8">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-light tracking-tight mb-2 text-white">Aircraft Sensor Monitoring</h1>
-              <p className="text-gray-400">Real-time sensor analysis with AI-powered anomaly detection</p>
+              <h1 className="text-3xl font-light tracking-tight mb-2 text-white">NASA Turbofan Engine Monitoring</h1>
+              <p className="text-gray-400">Real-time analysis using NASA C-MAPSS dataset with AI-powered anomaly detection</p>
+              <div className="flex items-center gap-4 mt-3 text-sm">
+                <div className="flex items-center gap-2 bg-slate-900/50 backdrop-blur rounded-lg px-3 py-1 border border-cyan-500/20">
+                  <Database className="w-4 h-4 text-cyan-400" />
+                  <span className="text-gray-300">Engine Unit {currentEngine}</span>
+                </div>
+                <div className="flex items-center gap-2 bg-slate-900/50 backdrop-blur rounded-lg px-3 py-1 border border-cyan-500/20">
+                  <Activity className="w-4 h-4 text-green-400" />
+                  <span className="text-gray-300">Cycle {turbofanData[currentDataIndex]?.timeCycles || 0}</span>
+                </div>
+                <div className="text-gray-500">
+                  Data Point: {currentDataIndex + 1} / {turbofanData.length}
+                </div>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <Button
@@ -360,12 +383,12 @@ const SensorDataUI: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-white flex items-center gap-2">
                     <Activity className="w-5 h-5 text-cyan-400" />
-                    System Status
+                    Turbofan Engine Status
                   </CardTitle>
                   {isScanning && (
                     <div className="flex items-center gap-2 text-sm text-cyan-400">
                       <Activity className="w-4 h-4 animate-pulse" />
-                      <span>Scanning</span>
+                      <span>Processing NASA Data</span>
                     </div>
                   )}
                 </div>
@@ -375,8 +398,8 @@ const SensorDataUI: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <Circle className="w-3 h-3 fill-red-500 text-red-500" />
                     <div>
-                      <p className="font-medium text-red-400">Anomaly Detected</p>
-                      <p className="text-sm text-gray-400">AI diagnostic protocol initiated</p>
+                      <p className="font-medium text-red-400">Critical Anomaly Detected</p>
+                      <p className="text-sm text-gray-400">NASA C-MAPSS data indicates engine degradation pattern</p>
                     </div>
                   </div>
                 ) : (
@@ -384,7 +407,7 @@ const SensorDataUI: React.FC = () => {
                     <Circle className="w-3 h-3 fill-green-500 text-green-500" />
                     <div>
                       <p className="font-medium text-green-400">Normal Operation</p>
-                      <p className="text-sm text-gray-400">All systems within parameters</p>
+                      <p className="text-sm text-gray-400">Real turbofan sensor readings within parameters</p>
                     </div>
                   </div>
                 )}
@@ -394,7 +417,7 @@ const SensorDataUI: React.FC = () => {
             {/* Sensor Readings */}
             <Card className="bg-slate-900/50 backdrop-blur-xl border-cyan-500/20">
               <CardHeader>
-                <CardTitle className="text-white">Live Sensor Data</CardTitle>
+                <CardTitle className="text-white">Live NASA Turbofan Sensor Data</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -417,19 +440,23 @@ const SensorDataUI: React.FC = () => {
                               <span className="text-2xl font-light text-white tabular-nums">{sensor.value}</span>
                               <span className="text-sm text-gray-400">{sensor.unit}</span>
                             </div>
-                            <p className="text-xs text-gray-500 mt-1">{sensor.config.location}</p>
+                            <p className="text-xs text-gray-500 mt-1">{sensor.column.description}</p>
                           </div>
                           {flaggedSensors.has(sensor.id) && (
                             <AlertTriangle className="w-5 h-5 text-yellow-400" />
                           )}
                         </div>
                         <div className="text-right">
-                          <div className="text-xs text-gray-500 mb-1">
-                            Range: {sensor.config.thresholds.min} - {sensor.config.thresholds.max}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            Critical: {sensor.config.thresholds.critical}
-                          </div>
+                          {sensor.column.thresholds && (
+                            <>
+                              <div className="text-xs text-gray-500 mb-1">
+                                Range: {sensor.column.thresholds.min} - {sensor.column.thresholds.max}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                Critical: {sensor.column.thresholds.critical}
+                              </div>
+                            </>
+                          )}
                           {sensor.status !== 'normal' && (
                             <span className={`text-xs uppercase tracking-wider px-2 py-1 rounded-full ${
                               sensor.status === 'critical' 
@@ -451,7 +478,7 @@ const SensorDataUI: React.FC = () => {
             {showRawData && (
               <Card className="bg-slate-900/50 backdrop-blur-xl border-cyan-500/20">
                 <CardHeader>
-                  <CardTitle className="text-white">Raw Data Stream</CardTitle>
+                  <CardTitle className="text-white">NASA C-MAPSS Raw Data Stream</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="bg-slate-950/50 p-4 rounded-lg font-mono text-xs overflow-x-auto max-h-64 overflow-y-auto border border-slate-700/50">
@@ -466,10 +493,10 @@ const SensorDataUI: React.FC = () => {
               <Card className="bg-slate-900/50 backdrop-blur-xl border-cyan-500/20">
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-white">Visual Inspection Feed</CardTitle>
+                    <CardTitle className="text-white">Engine Visual Inspection</CardTitle>
                     <Button variant="outline" size="sm" className="border-cyan-500/20 text-cyan-400">
                       <Play className="w-4 h-4 mr-2" />
-                      Live
+                      Live Feed
                     </Button>
                   </div>
                 </CardHeader>
@@ -477,8 +504,8 @@ const SensorDataUI: React.FC = () => {
                   <div className="aspect-video bg-slate-950/50 rounded-lg flex items-center justify-center border border-slate-700/50">
                     <div className="text-center">
                       <Play className="w-12 h-12 mx-auto mb-3 text-gray-500" />
-                      <p className="text-sm text-gray-400">Camera Feed: Engine Bay 1</p>
-                      <p className="text-xs text-gray-500 mt-1">AI Visual Analysis Active</p>
+                      <p className="text-sm text-gray-400">Turbofan Engine Visual Inspection</p>
+                      <p className="text-xs text-gray-500 mt-1">AI Analysis of Engine Components</p>
                     </div>
                   </div>
                 </CardContent>
@@ -492,7 +519,7 @@ const SensorDataUI: React.FC = () => {
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-cyan-400" />
-                  AI Diagnostic Assistant
+                  NASA C-MAPSS AI Assistant
                 </CardTitle>
               </CardHeader>
               <CardContent className="h-96 flex flex-col">
@@ -500,9 +527,9 @@ const SensorDataUI: React.FC = () => {
                   {!showAgent ? (
                     <div className="flex items-center justify-center h-full">
                       <div className="text-center">
-                        <Activity className="w-8 h-8 mx-auto mb-3 text-gray-500" />
-                        <p className="text-sm text-gray-400">Monitoring active</p>
-                        <p className="text-xs text-gray-500 mt-1">Assistant on standby</p>
+                        <Database className="w-8 h-8 mx-auto mb-3 text-gray-500" />
+                        <p className="text-sm text-gray-400">Processing real turbofan data</p>
+                        <p className="text-xs text-gray-500 mt-1">NASA C-MAPSS dataset analysis</p>
                       </div>
                     </div>
                   ) : (
@@ -527,7 +554,7 @@ const SensorDataUI: React.FC = () => {
                     <div className="flex gap-2">
                       <input
                         type="text"
-                        placeholder="Type a message..."
+                        placeholder="Ask about the turbofan data..."
                         className="flex-1 text-sm px-3 py-2 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition-colors"
                       />
                       <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-white">

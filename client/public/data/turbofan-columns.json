@@ -1,0 +1,202 @@
+{
+  "columns": [
+    {
+      "index": 1,
+      "name": "Unit Number",
+      "description": "Engine unit identifier",
+      "type": "identifier"
+    },
+    {
+      "index": 2,
+      "name": "Time Cycles",
+      "description": "Operational cycle timestamp",
+      "type": "time"
+    },
+    {
+      "index": 3,
+      "name": "Operational Setting 1",
+      "description": "Engine operational setting 1",
+      "type": "setting"
+    },
+    {
+      "index": 4,
+      "name": "Operational Setting 2", 
+      "description": "Engine operational setting 2",
+      "type": "setting"
+    },
+    {
+      "index": 5,
+      "name": "Operational Setting 3",
+      "description": "Engine operational setting 3", 
+      "type": "setting"
+    },
+    {
+      "index": 6,
+      "name": "Fan Inlet Temperature",
+      "description": "Temperature at fan inlet (°R)",
+      "type": "sensor",
+      "unit": "°R",
+      "thresholds": { "min": 400, "max": 520, "critical": 550 }
+    },
+    {
+      "index": 7,
+      "name": "LPC Outlet Temperature",
+      "description": "Low pressure compressor outlet temperature (°R)",
+      "type": "sensor", 
+      "unit": "°R",
+      "thresholds": { "min": 500, "max": 650, "critical": 700 }
+    },
+    {
+      "index": 8,
+      "name": "HPC Outlet Temperature",
+      "description": "High pressure compressor outlet temperature (°R)",
+      "type": "sensor",
+      "unit": "°R", 
+      "thresholds": { "min": 1200, "max": 1600, "critical": 1700 }
+    },
+    {
+      "index": 9,
+      "name": "LPT Outlet Temperature",
+      "description": "Low pressure turbine outlet temperature (°R)",
+      "type": "sensor",
+      "unit": "°R",
+      "thresholds": { "min": 1000, "max": 1400, "critical": 1500 }
+    },
+    {
+      "index": 10,
+      "name": "Fan Inlet Pressure",
+      "description": "Pressure at fan inlet (psia)",
+      "type": "sensor",
+      "unit": "psia",
+      "thresholds": { "min": 8, "max": 12, "critical": 15 }
+    },
+    {
+      "index": 11,
+      "name": "Bypass-duct Pressure",
+      "description": "Bypass duct pressure (psia)", 
+      "type": "sensor",
+      "unit": "psia",
+      "thresholds": { "min": 10, "max": 18, "critical": 22 }
+    },
+    {
+      "index": 12,
+      "name": "HPC Outlet Pressure",
+      "description": "High pressure compressor outlet pressure (psia)",
+      "type": "sensor",
+      "unit": "psia", 
+      "thresholds": { "min": 300, "max": 450, "critical": 500 }
+    },
+    {
+      "index": 13,
+      "name": "Physical Fan Speed",
+      "description": "Physical fan speed (rpm)",
+      "type": "sensor",
+      "unit": "rpm",
+      "thresholds": { "min": 2000, "max": 2500, "critical": 2700 }
+    },
+    {
+      "index": 14,
+      "name": "Physical Core Speed", 
+      "description": "Physical core speed (rpm)",
+      "type": "sensor",
+      "unit": "rpm",
+      "thresholds": { "min": 8000, "max": 9000, "critical": 9500 }
+    },
+    {
+      "index": 15,
+      "name": "Engine Pressure Ratio",
+      "description": "Static pressure ratio across engine",
+      "type": "sensor",
+      "unit": "ratio",
+      "thresholds": { "min": 1.0, "max": 1.5, "critical": 1.8 }
+    },
+    {
+      "index": 16,
+      "name": "Static Pressure at HPC Outlet",
+      "description": "Static pressure at HPC outlet (psia)",
+      "type": "sensor", 
+      "unit": "psia",
+      "thresholds": { "min": 40, "max": 50, "critical": 55 }
+    },
+    {
+      "index": 17,
+      "name": "Fuel Flow Rate",
+      "description": "Fuel flow rate (pps)",
+      "type": "sensor",
+      "unit": "pps",
+      "thresholds": { "min": 300, "max": 400, "critical": 450 }
+    },
+    {
+      "index": 18,
+      "name": "Corrected Fan Speed",
+      "description": "Corrected fan speed (rpm)",
+      "type": "sensor",
+      "unit": "rpm", 
+      "thresholds": { "min": 2300, "max": 2500, "critical": 2600 }
+    },
+    {
+      "index": 19,
+      "name": "Corrected Core Speed",
+      "description": "Corrected core speed (rpm)",
+      "type": "sensor",
+      "unit": "rpm",
+      "thresholds": { "min": 8000, "max": 8500, "critical": 9000 }
+    },
+    {
+      "index": 20,
+      "name": "Bypass Ratio",
+      "description": "Bypass ratio",
+      "type": "sensor",
+      "unit": "ratio", 
+      "thresholds": { "min": 8, "max": 12, "critical": 15 }
+    },
+    {
+      "index": 21,
+      "name": "Burner Fuel-Air Ratio",
+      "description": "Burner fuel-air ratio",
+      "type": "sensor",
+      "unit": "ratio",
+      "thresholds": { "min": 0.01, "max": 0.05, "critical": 0.08 }
+    },
+    {
+      "index": 22,
+      "name": "Bleed Enthalpy",
+      "description": "Bleed enthalpy",
+      "type": "sensor",
+      "unit": "BTU/lbm",
+      "thresholds": { "min": 300, "max": 400, "critical": 450 }
+    },
+    {
+      "index": 23,
+      "name": "Demanded Fan Speed",
+      "description": "Demanded fan speed",
+      "type": "sensor", 
+      "unit": "rpm",
+      "thresholds": { "min": 2200, "max": 2400, "critical": 2500 }
+    },
+    {
+      "index": 24,
+      "name": "Demanded Corrected Fan Speed",
+      "description": "Demanded corrected fan speed",
+      "type": "sensor",
+      "unit": "rpm",
+      "thresholds": { "min": 80, "max": 120, "critical": 140 }
+    },
+    {
+      "index": 25,
+      "name": "HPT Coolant Bleed",
+      "description": "High pressure turbine coolant bleed (lbm/s)",
+      "type": "sensor",
+      "unit": "lbm/s", 
+      "thresholds": { "min": 20, "max": 40, "critical": 50 }
+    },
+    {
+      "index": 26,
+      "name": "LPT Coolant Bleed",
+      "description": "Low pressure turbine coolant bleed (lbm/s)",
+      "type": "sensor",
+      "unit": "lbm/s",
+      "thresholds": { "min": 10, "max": 25, "critical": 35 }
+    }
+  ]
+} 
