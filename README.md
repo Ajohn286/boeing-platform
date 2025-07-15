@@ -2,9 +2,9 @@
 
 ## Overview
 
-This platform is a modern, full-stack web application for predictive maintenance (Airbus demo) and wealth management (Harvard Wealth Management). It features:
+This platform is a modern, full-stack web application for predictive maintenance (Airbus demo). It features:
 - AI-powered aircraft maintenance demo (Agentic Four-Box)
-- Wealth management dashboards and tools
+- Predictive dashboards and tools
 - Modular, extensible architecture
 - Modern React, TypeScript, Vite, Tailwind, and shadcn/ui
 
@@ -16,12 +16,6 @@ This platform is a modern, full-stack web application for predictive maintenance
 - AI agent chat and decision support
 - Maintenance alert queue, claim detail, and agent mobilization flows
 - Realistic demo assets (screen recordings, audio, etc.)
-
-### Wealth Management
-- Portfolio management and analytics
-- Investment analysis and risk assessment
-- Document extraction and reporting
-- ESG and compliance monitoring
 
 ## Project Structure
 - `client/` — Frontend React app (TypeScript, Vite, shadcn/ui)
