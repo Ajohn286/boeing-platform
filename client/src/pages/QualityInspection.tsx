@@ -11,7 +11,9 @@ type Defect = {
   time: number;
 };
 
-const videoSrc = '/Aircraft Defect Analysis.mp4';
+import screenRecordingSrc from "@/assets/screen_recording.mp4";
+
+const videoSrc = screenRecordingSrc;
 const videoDefects: Defect[] = [
   { type: 'Crack', severity: 'High', location: 'Fuselage', box: { left: 100, top: 60, width: 80, height: 40 }, time: 2 },
   { type: 'Dent', severity: 'Medium', location: 'Wing', box: { left: 200, top: 120, width: 60, height: 30 }, time: 5 },

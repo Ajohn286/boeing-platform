@@ -150,4 +150,19 @@
   .border-error {
     border-color: hsl(var(--destructive));
   }
+
+  /* Axon dots pattern for navigation */
+  .axon-dots-pattern-nav {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #6B7280 1px, transparent 1px);
+    background-size: 8px 8px;
+    background-position: 0 0, 4px 4px;
+    opacity: 0.3;
+    border-radius: 50%;
+  }
 }

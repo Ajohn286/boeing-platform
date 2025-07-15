@@ -18,6 +18,10 @@ import WealthManagement from "@/pages/WealthManagement";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/not-found";
 import QualityInspection from './pages/QualityInspection';
+import AgenticClaimQueue from "@/pages/AgenticClaimQueue";
+import AgenticClaimDetail from "@/pages/AgenticClaimDetail";
+import AgenticAgentMobilization from "@/pages/AgenticAgentMobilization";
+import AgenticSplash from "@/pages/AgenticSplash";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -109,6 +113,14 @@ function Router() {
             <Route path="/model-evaluations" component={ModelEvaluations} />
             <Route path="/predictive-maintenance" component={WealthManagement} />
             <Route path="/quality-inspection" component={QualityInspection} />
+            
+            {/* Agentic Four Box Demo Routes */}
+            <Route path="/agentic-claim-queue" component={AgenticClaimQueue} />
+            <Route path="/agentic-claim-detail/:claimId" component={AgenticClaimDetail} />
+            <Route path="/agentic-agent-mobilization" component={AgenticAgentMobilization} />
+            <Route path="/agentic-splash" component={AgenticSplash} />
+            <Route path="/agentic-dashboard" component={AgenticEngine} />
+            
             <Route component={NotFound} />
           </Switch>
         </div>

@@ -17,7 +17,7 @@ const navigationItems = [
   { path: "/quality-inspection", label: "Quality Inspection", icon: PlatformIcon },
   { path: "/data-environment", label: "Data Environment", icon: DataIcon },
   { path: "/process-builder", label: "Process Builder", icon: ProcessIcon },
-  { path: "/agentic-engine", label: "Agentic Engine", icon: AgentIcon },
+  { path: "/agentic-claim-queue", label: "Agentic Engine", icon: AgentIcon },
   { path: "/expert-marketplace", label: "Expert Marketplace", icon: ExpertIcon },
   { path: "/model-evaluations", label: "Model Evaluations", icon: ModelIcon },
 ];
@@ -27,6 +27,10 @@ export default function Sidebar() {
 
   const isActive = (path: string) => {
     if (path === "/platform" && (location === "/" || location === "/platform")) {
+      return true;
+    }
+    // Handle agentic routes - all agentic routes should highlight the Agentic Engine nav item
+    if (path === "/agentic-claim-queue" && location.startsWith("/agentic-")) {
       return true;
     }
     return location === path;
