@@ -1,4 +1,4 @@
-# Airbus Predictive Maintenance & Wealth Management Platform
+# Airbus Predictive Maintenance Platform
 
 ## Overview
 
