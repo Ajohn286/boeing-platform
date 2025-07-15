@@ -5,7 +5,7 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, Upload, Lightbulb, X } fro
 import { useDemoTimer } from '../hooks/use-demo-timer';
 // Video now served from public/media directory
 const newVideoSrc = "/media/demo-clip.mp4";
-import screenRecordingSrc from "@/assets/Screen Recording 2025-07-14 at 3.48.57 PM_1752522596220.mov";
+const screenRecordingSrc = "/media/Screen Recording 2025-07-14 at 3.48.57 PM_1752522596220.mov";
 
 interface VideoPlayerProps {
   onProgressChange?: (progress: number) => void;
