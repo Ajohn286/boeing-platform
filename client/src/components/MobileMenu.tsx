@@ -9,7 +9,7 @@ import {
   ModelIcon,
   PredictiveMaintenanceIcon 
 } from "@/components/icons/PlatformIcon";
-import invisiblePlatformLogo from "@/assets/invisible-platform-logo.svg";
+import invisiblePlatformLogo from "@/assets/invisible-primary-logo-lockup-white-rgb-72ppi (1).png";
 
 const navigationItems = [
   { path: "/platform", label: "Platform", icon: PlatformIcon },
@@ -60,6 +60,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <button 
             onClick={onClose}
             className="text-gray-400 hover:text-white"
+            title="Close menu"
           >
             <X className="h-6 w-6" />
           </button>

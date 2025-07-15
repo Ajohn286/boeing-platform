@@ -23,7 +23,7 @@ import {
   BarChart3,
   Settings
 } from "lucide-react";
-import logoPath from "@/assets/Logo Black_1751208089436.png";
+import logoPath from "@/assets/invisible-primary-logo-lockup-white-rgb-72ppi (1).png";
 
 interface AIAgent {
   id: string;

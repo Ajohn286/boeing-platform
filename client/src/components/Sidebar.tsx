@@ -9,7 +9,7 @@ import {
   ModelIcon,
   PredictiveMaintenanceIcon 
 } from "@/components/icons/PlatformIcon";
-import invisiblePlatformLogo from "@/assets/invisible-platform-logo.svg";
+import invisiblePlatformLogo from "@/assets/invisible-primary-logo-lockup-white-rgb-72ppi (1).png";
 
 const navigationItems = [
   { path: "/platform", label: "Platform", icon: PlatformIcon },
