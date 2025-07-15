@@ -23,9 +23,13 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@assets/*": ["./src/assets/*"]
+    },
+
+    /* Types */
+    "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 } 
