@@ -11,7 +11,8 @@ import {
   CheckCircle,
   ArrowRight
 } from "lucide-react";
-import logoPath from "@/assets/Logo Black_1751208089436.png";
+// Logo now served from public/media directory
+const logoPath = "/media/logo.png";
 
 export default function AgenticSplash() {
   const [, setLocation] = useLocation();

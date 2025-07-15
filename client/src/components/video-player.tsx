@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Play, Pause, SkipBack, SkipForward, Volume2, Upload, Lightbulb, X } from "lucide-react";
 import { useDemoTimer } from '../hooks/use-demo-timer';
-import newVideoSrc from "@/assets/GMT20250629-154810_Clip_Parul Singh's Clip 06_29_2025_1751212202169.mp4";
+// Video now served from public/media directory
+const newVideoSrc = "/media/demo-clip.mp4";
 import screenRecordingSrc from "@/assets/Screen Recording 2025-07-14 at 3.48.57 PM_1752522596220.mov";
 
 interface VideoPlayerProps {

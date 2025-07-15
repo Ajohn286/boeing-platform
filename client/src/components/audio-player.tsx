@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Speaker, Lightbulb, X } from "lucide-react";
 import { useDemoTimer } from "@/hooks/use-demo-timer";
-import humeAudioSrc from "@/assets/HumeAI_2025Jul14_52882d3c-7bb6-4eee-8ba4-bfd135afef0713157628_574a9b21-4fc2-4f6a-af82-5d39150776ed_1752521569034.wav";
+// Audio now served from public/media directory
+const humeAudioSrc = "/media/hume-audio.wav";
 
 interface AgentMessage {
   id: string;

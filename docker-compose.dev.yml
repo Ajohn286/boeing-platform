@@ -1,0 +1,119 @@
+# *******************
+# Project        : Airbus Review LHM
+# File           : docker-compose.dev.yml
+# Version        : v1.0  Last update: 01/08/2025 15:30 EST
+# Status         : Supports: UV | PNP
+# Classification : CUI//SP-CTI
+# Purpose        : Development Docker Compose configuration
+# Workflow       : MAIN
+# Core Module    : yes
+# App Functionality : [development-orchestration]
+# Dependencies
+#   * Called by       : development scripts
+#   * Calls           : Dockerfile, package.json
+#   * Libraries       : Docker Compose
+#   * Infrastructure  : Docker, hot-reload
+# Change Log
+#   * v1.0 (01/08/2025): Initial creation for development environment
+# Description     : Development setup with hot reload and volume mounts
+# *******************
+
+version: '3.8'
+
+services:
+  # Airbus Application (Development Mode)
+  airbus-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: development
+    container_name: airbus-review-lhm-dev
+    ports:
+      - "5173:5173"  # Vite dev server
+      - "5000:5000"  # Express server
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - VITE_PORT=5173
+      - DATABASE_URL=postgresql://airbus_user:airbus_pass@postgres:5432/airbus_db
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./client:/app/client
+      - ./server:/app/server
+      - ./shared:/app/shared
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./vite.config.ts:/app/vite.config.ts
+      - /app/node_modules
+      - /app/client/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - airbus-network
+    command: npm run dev
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: airbus-postgres-dev
+    environment:
+      - POSTGRES_DB=airbus_db
+      - POSTGRES_USER=airbus_user
+      - POSTGRES_PASSWORD=airbus_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airbus_user -d airbus_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - airbus-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: airbus-redis-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - airbus-network
+
+  # Database Admin Interface
+  adminer:
+    image: adminer:4.8.1
+    container_name: airbus-adminer-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - airbus-network
+
+networks:
+  airbus-network:
+    driver: bridge
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local 

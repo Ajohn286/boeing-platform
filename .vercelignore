@@ -1,0 +1,47 @@
+# Large media files (too big for Vercel)
+client/src/assets/*.mov
+client/src/assets/*.mp4
+client/src/assets/*.wav
+client/src/assets/*_1752*.mov
+client/src/assets/*_1752*.mp4
+client/src/assets/screen_recording.*
+client/src/assets/Screen\ Recording*
+client/src/assets/HumeAI_*
+client/src/assets/GMT*
+
+# Development files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node modules
+node_modules/
+*/node_modules/
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Cache
+.cache/
+.vercel/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Git
+.git/
+
+# Temporary
+temp-data-platform/
+attached_assets/ 

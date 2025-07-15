@@ -7,7 +7,8 @@ import ProgressBar from "@/components/progress-bar";
 import { Button } from "@/components/ui/button";
 import { Check, X, Pause, Play, Settings, AlertTriangle } from "lucide-react";
 import { useDemoTimer } from "@/hooks/use-demo-timer";
-import logoPath from "@/assets/Logo Black_1751208089436.png";
+// Logo now served from public/media directory
+const logoPath = "/media/logo.png";
 
 export default function AgenticEngine() {
   const [videoProgress, setVideoProgress] = useState(10);

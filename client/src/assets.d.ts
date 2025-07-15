@@ -48,7 +48,20 @@ declare module "*.mp3" {
   export default content;
 }
 
-declare module "*.ogg" {
-  const content: string;
-  export default content;
+// Node.js types for server-side code
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NODE_ENV: 'development' | 'production' | 'test';
+    VITE_API_URL?: string;
+    VITE_APP_TITLE?: string;
+  }
+}
+
+// Global type augmentations
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
 } 

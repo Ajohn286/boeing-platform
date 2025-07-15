@@ -11,7 +11,8 @@ type Defect = {
   time: number;
 };
 
-import screenRecordingSrc from "@/assets/screen_recording.mp4";
+// Video now served from public/media directory
+const screenRecordingSrc = "/media/screen-recording.mp4";
 
 const videoSrc = screenRecordingSrc;
 const videoDefects: Defect[] = [

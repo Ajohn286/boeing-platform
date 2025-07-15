@@ -30,7 +30,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import logoPath from "@/assets/Logo Black_1751208089436.png";
+// Logo now served from public/media directory
+const logoPath = "/media/logo.png";
 
 interface MaintenanceAlertDetail {
   id: string;

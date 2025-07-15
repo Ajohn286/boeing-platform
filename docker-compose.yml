@@ -1,0 +1,128 @@
+# *******************
+# Project        : Airbus Review LHM
+# File           : docker-compose.yml
+# Version        : v1.0  Last update: 01/08/2025 15:30 EST
+# Status         : Supports: UV | PNP
+# Classification : CUI//SP-CTI
+# Purpose        : Docker Compose configuration for Airbus platform
+# Workflow       : MAIN
+# Core Module    : yes
+# App Functionality : [orchestration]
+# Dependencies
+#   * Called by       : deployment scripts, development setup
+#   * Calls           : Dockerfile, environment variables
+#   * Libraries       : Docker Compose
+#   * Infrastructure  : Docker, PostgreSQL, Redis
+# Change Log
+#   * v1.0 (01/08/2025): Initial creation for Docker deployment
+# Description     : Multi-service Docker Compose setup with app, database, and cache
+# *******************
+
+version: '3.8'
+
+services:
+  # Main Airbus Application
+  airbus-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: airbus-review-lhm
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DATABASE_URL=postgresql://airbus_user:airbus_pass@postgres:5432/airbus_db
+      - REDIS_URL=redis://redis:6379
+      - AUTH0_SECRET=your-auth0-secret-here
+      - AUTH0_BASE_URL=http://localhost:5000
+      - AUTH0_ISSUER_BASE_URL=https://your-auth0-domain.auth0.com
+      - AUTH0_CLIENT_ID=your-auth0-client-id
+      - AUTH0_CLIENT_SECRET=your-auth0-client-secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - airbus-network
+    volumes:
+      - ./logs:/app/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.airbus.rule=Host(`localhost`)"
+      - "traefik.http.services.airbus.loadbalancer.server.port=5000"
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: airbus-postgres
+    environment:
+      - POSTGRES_DB=airbus_db
+      - POSTGRES_USER=airbus_user
+      - POSTGRES_PASSWORD=airbus_pass
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airbus_user -d airbus_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - airbus-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: airbus-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass airbus_redis_pass
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "airbus_redis_pass", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - airbus-network
+
+  # Development Database Admin (optional)
+  adminer:
+    image: adminer:4.8.1
+    container_name: airbus-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - airbus-network
+    profiles:
+      - development
+
+networks:
+  airbus-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local 

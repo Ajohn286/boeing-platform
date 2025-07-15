@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Globe, ZoomIn, ZoomOut, RotateCw, Download, Play, Lightbulb, X } from "lucide-react";
 import { useDemoTimer } from '../hooks/use-demo-timer';
-import gmtVideoSrc from "@/assets/GMT20250629-145811_Clip_Parul Singh's Clip 06_29_2025_1751209218585.mp4";
+// Video now served from public/media directory
+const gmtVideoSrc = "/media/demo-video.mp4";
 
 interface AgentMessage {
   id: string;

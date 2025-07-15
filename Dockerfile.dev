@@ -1,0 +1,65 @@
+# *******************
+# Project        : Airbus Review LHM
+# File           : Dockerfile.dev
+# Version        : v1.0  Last update: 01/08/2025 15:30 EST
+# Status         : Supports: UV | PNP
+# Classification : CUI//SP-CTI
+# Purpose        : Development Docker build with hot reload
+# Workflow       : MAIN
+# Core Module    : yes
+# App Functionality : [development-containerization]
+# Dependencies
+#   * Called by       : docker-compose.dev.yml
+#   * Calls           : package.json dev scripts
+#   * Libraries       : Node.js, npm
+#   * Infrastructure  : Docker
+# Change Log
+#   * v1.0 (01/08/2025): Initial creation for development environment
+# Description     : Development Dockerfile with volume mounts and hot reload
+# *******************
+
+FROM node:18-alpine AS development
+
+WORKDIR /app
+
+# Install development tools
+RUN apk add --no-cache git
+
+# Copy package files
+COPY package*.json ./
+COPY client/package*.json ./client/
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+RUN cd client && npm install
+
+# Copy source code (will be overridden by volume mounts in dev)
+COPY . .
+
+# Expose ports for both frontend and backend
+EXPOSE 5000 5173
+
+# Install nodemon globally for hot reload
+RUN npm install -g nodemon tsx
+
+# Create a start script for development
+RUN echo '#!/bin/sh\n\
+echo "Starting Airbus Review LHM Development Environment..."\n\
+echo "Frontend will be available at http://localhost:5173"\n\
+echo "Backend will be available at http://localhost:5000"\n\
+\n\
+# Start the client in the background\n\
+cd /app/client && npm run dev &\n\
+CLIENT_PID=$!\n\
+\n\
+# Start the server with hot reload\n\
+cd /app && npm run dev &\n\
+SERVER_PID=$!\n\
+\n\
+# Wait for both processes\n\
+wait $CLIENT_PID\n\
+wait $SERVER_PID\n\
+' > /app/start-dev.sh && chmod +x /app/start-dev.sh
+
+# Default command
+CMD ["/app/start-dev.sh"] 
