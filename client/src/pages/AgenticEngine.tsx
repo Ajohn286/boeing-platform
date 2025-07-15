@@ -216,7 +216,7 @@ export default function AgenticEngine() {
     setVideoProgress(100);
     console.log('Demo: Maintenance approved - progress set to 100%');
   };
-  return (
+      return (
     <div className="h-screen bg-[hsl(220,26%,14%)] text-white flex flex-col overflow-hidden">
       {/* Header Navigation - 8vh */}
       <nav className="bg-white h-16 flex items-center justify-between px-6 border-b border-gray-200 flex-shrink-0">
@@ -226,7 +226,7 @@ export default function AgenticEngine() {
             alt="Invisible Logo" 
             className="h-5 w-auto"
           />
-        </div>
+            </div>
         
         <div className="flex items-center gap-4">
           {/* Pause/Resume Button */}
@@ -241,44 +241,44 @@ export default function AgenticEngine() {
             ) : (
               <Pause className="w-4 h-4" />
             )}
-          </Button>
+              </Button>
           
           {/* Axon Logo in Nav Bar */}
           <div className="relative">
             {/* Dotted circle pattern background - larger for more visibility */}
             <div className="w-16 h-16 relative">
               <div className="axon-dots-pattern-nav"></div>
-            </div>
-            
+          </div>
+
             {/* Central text */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-base font-bold text-gray-800 tracking-wide">Axon</div>
-            </div>
-          </div>
-        </div>
+                  </div>
+                </div>
+                </div>
       </nav>
 
       {/* Main Grid Container - 84vh */}
       <div className="flex-1 grid grid-cols-2 grid-rows-2 min-h-0 relative">
         {/* Top Left: Video Player */}
-        <div>
+                  <div>
           <VideoPlayer onProgressChange={setVideoProgress} onVideoEnd={() => setFirstVideoEnded(true)} />
-        </div>
+                  </div>
 
         {/* Top Right: Audio Player */}
-        <div>
+                  <div>
           <AudioPlayer />
-        </div>
+                  </div>
 
         {/* Bottom Left: Document Viewer */}
-        <div>
+                  <div>
           <DocumentViewer />
-        </div>
+                  </div>
 
         {/* Bottom Right: Web Browser */}
-        <div>
+                  <div>
           <WebBrowser shouldStartVideo={firstVideoEnded} />
-        </div>
+          </div>
 
 
 
@@ -298,8 +298,8 @@ export default function AgenticEngine() {
                       <div><strong>Alert Reference:</strong> AIR-A350-7825</div>
                       <div><strong>Date of Detection:</strong> July 14, 2025</div>
                       <div className="col-span-2"><strong>Location:</strong> CDG Airport, Paris, France</div>
-                    </div>
                   </div>
+            </div>
 
                   {/* Aircraft Information */}
                   <div>
@@ -350,8 +350,8 @@ export default function AgenticEngine() {
                         <li>Work order #LG20250711 generated for landing gear strut replacement with 8-hour estimated downtime and no temporary repair exceptions.</li>
                       </ul>
                     )}
-                  </div>
-                </div>
+                    </div>
+        </div>
 
                 <div className="flex gap-4 justify-center mt-8">
                   <Button
@@ -360,7 +360,7 @@ export default function AgenticEngine() {
                   >
                     <Check className="w-5 h-5" />
                     Approve
-                  </Button>
+              </Button>
                   <Button
                     onClick={() => setShowRejectionReason(true)}
                     variant="outline"
@@ -368,9 +368,9 @@ export default function AgenticEngine() {
                   >
                     <X className="w-5 h-5" />
                     Reject
-                  </Button>
-                </div>
-
+              </Button>
+          </div>
+          
                 {/* Rejection Reason Section */}
                 {showRejectionReason && (
                   <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -396,7 +396,7 @@ export default function AgenticEngine() {
                         className="bg-red-600 hover:bg-red-700 text-white px-4 py-2"
                       >
                         Submit Rejection
-                      </Button>
+                            </Button>
                       <Button
                         onClick={() => {
                           setShowRejectionReason(false);
@@ -406,11 +406,11 @@ export default function AgenticEngine() {
                         className="border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2"
                       >
                         Cancel
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                            </Button>
+                          </div>
               </div>
+                )}
+        </div>
 
               {/* Right Side - AI Agent Chat */}
               <div className="w-96 bg-[#FAFAFA] border-l border-gray-200 flex flex-col">
@@ -420,7 +420,7 @@ export default function AgenticEngine() {
                     AI Agent Discussion
                   </h3>
                   <p className="text-xs text-gray-600 mt-1">Real-time maintenance analysis</p>
-                </div>
+            </div>
                 
                 <div className="flex-1 overflow-y-auto p-4 space-y-4" data-chat-container="true">
                   {chatMessages.map((msg, index) => {
@@ -435,8 +435,8 @@ export default function AgenticEngine() {
                           {/* Agent name */}
                           <div className={`text-xs text-gray-500 mb-1 ${isOddIndex ? 'text-right' : 'text-left'}`}>
                             {msg.agent}
-                          </div>
-                          
+          </div>
+          
                           {/* Speech bubble */}
                           <div className={`relative p-3 rounded-2xl shadow-sm ${agentColors.bg} ${agentColors.text} ${
                             isOddIndex 
@@ -451,9 +451,9 @@ export default function AgenticEngine() {
                             )}
                             
                             <p className="text-sm leading-relaxed">{msg.message}</p>
-                          </div>
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+                    </div>
                     );
                   })}
                   
@@ -461,16 +461,16 @@ export default function AgenticEngine() {
                     <div className="text-center text-gray-500 text-sm mt-8">
                       <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
                       Initializing AI agents...
-                    </div>
+                  </div>
                   )}
-                </div>
+          </div>
                 
 
-              </div>
-            </div>
+        </div>
+      </div>
           </div>
         )}
-      </div>
+        </div>
 
 
     </div>
