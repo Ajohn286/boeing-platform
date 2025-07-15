@@ -1,0 +1,131 @@
+{
+  "sensors": [
+    {
+      "id": "SNS-001",
+      "name": "Engine Temperature",
+      "type": "temperature",
+      "unit": "°F",
+      "location": "Engine Bay 1",
+      "thresholds": {
+        "min": 65,
+        "max": 80,
+        "critical": 85
+      },
+      "calibration": {
+        "date": "2025-01-15",
+        "accuracy": "±0.1%",
+        "nextDue": "2025-07-15"
+      }
+    },
+    {
+      "id": "SNS-002", 
+      "name": "Hydraulic Pressure",
+      "type": "pressure",
+      "unit": "PSI",
+      "location": "Landing Gear System",
+      "thresholds": {
+        "min": 2800,
+        "max": 3200,
+        "critical": 3500
+      },
+      "calibration": {
+        "date": "2025-01-10",
+        "accuracy": "±0.2%",
+        "nextDue": "2025-07-10"
+      }
+    },
+    {
+      "id": "SNS-003",
+      "name": "Vibration Monitor",
+      "type": "vibration", 
+      "unit": "mm/s",
+      "location": "Main Rotor Assembly",
+      "thresholds": {
+        "min": 0,
+        "max": 0.8,
+        "critical": 1.0
+      },
+      "calibration": {
+        "date": "2025-01-12",
+        "accuracy": "±0.05%",
+        "nextDue": "2025-07-12"
+      }
+    },
+    {
+      "id": "SNS-004",
+      "name": "Fuel Flow Rate",
+      "type": "flow",
+      "unit": "GPM", 
+      "location": "Fuel System",
+      "thresholds": {
+        "min": 100,
+        "max": 140,
+        "critical": 150
+      },
+      "calibration": {
+        "date": "2025-01-08",
+        "accuracy": "±0.1%",
+        "nextDue": "2025-07-08"
+      }
+    },
+    {
+      "id": "SNS-005",
+      "name": "Engine RPM",
+      "type": "rotation",
+      "unit": "RPM",
+      "location": "Engine Bay 1", 
+      "thresholds": {
+        "min": 2500,
+        "max": 3500,
+        "critical": 4000
+      },
+      "calibration": {
+        "date": "2025-01-14",
+        "accuracy": "±0.05%",
+        "nextDue": "2025-07-14"
+      }
+    },
+    {
+      "id": "SNS-006",
+      "name": "Cabin Humidity",
+      "type": "humidity",
+      "unit": "%",
+      "location": "Cabin Environment",
+      "thresholds": {
+        "min": 30,
+        "max": 60,
+        "critical": 70
+      },
+      "calibration": {
+        "date": "2025-01-16",
+        "accuracy": "±1%",
+        "nextDue": "2025-07-16"
+      }
+    },
+    {
+      "id": "SNS-007",
+      "name": "Electrical Voltage",
+      "type": "electrical",
+      "unit": "V",
+      "location": "Main Power Bus",
+      "thresholds": {
+        "min": 110,
+        "max": 130,
+        "critical": 135
+      },
+      "calibration": {
+        "date": "2025-01-11",
+        "accuracy": "±0.1%",
+        "nextDue": "2025-07-11"
+      }
+    }
+  ],
+  "metadata": {
+    "aircraft": "Boeing 737-800",
+    "tail_number": "N737AB",
+    "last_maintenance": "2025-01-05",
+    "next_scheduled": "2025-03-05",
+    "flight_hours": 12456,
+    "cycle_count": 8932
+  }
+} 

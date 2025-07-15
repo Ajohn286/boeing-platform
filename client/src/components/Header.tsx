@@ -18,6 +18,9 @@ const pageContent = {
   '/agentic-engine': { title: 'Agentic Engine', subtitle: 'Manage AI agents and automation' },
   '/expert-marketplace': { title: 'Expert Marketplace', subtitle: 'Connect with domain specialists' },
   '/model-evaluations': { title: 'Model Evaluations', subtitle: 'Assess AI model performance' },
+  '/sensor-monitoring': { title: 'Sensor Monitoring', subtitle: 'Real-time aircraft sensor analysis with AI anomaly detection' },
+  '/predictive-maintenance': { title: 'Predictive Maintenance', subtitle: 'AI-powered maintenance forecasting and optimization' },
+  '/quality-inspection': { title: 'Quality Inspection', subtitle: 'Computer vision quality control and defect detection' },
 };
 
 interface HeaderProps {

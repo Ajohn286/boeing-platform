@@ -1,0 +1,53 @@
+{
+  "readings": [
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-001",
+      "value": 78.5,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z", 
+      "sensor_id": "SNS-002",
+      "value": 3050,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-003", 
+      "value": 0.6,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-004",
+      "value": 125,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-005",
+      "value": 3200,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-006", 
+      "value": 45,
+      "status": "normal"
+    },
+    {
+      "timestamp": "2025-01-15T14:30:00Z",
+      "sensor_id": "SNS-007",
+      "value": 118,
+      "status": "normal"
+    }
+  ],
+  "metadata": {
+    "collection_start": "2025-01-15T14:30:00Z",
+    "collection_interval": 1000,
+    "aircraft_status": "in_flight",
+    "altitude": 35000,
+    "airspeed": 485
+  }
+} 
