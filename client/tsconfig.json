@@ -30,6 +30,6 @@
     /* Types */
     "types": ["node"]
   },
-  "include": ["src", "src/**/*"],
+  "include": ["src", "src/**/*", "src/assets.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 } 
