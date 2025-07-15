@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Play, Pause, SkipBack, SkipForward, Volume2, Upload, Lightbulb, X } from "lucide-react";
 import { useDemoTimer } from '../hooks/use-demo-timer';
-// Video now served from public/media directory
+// Video now served from public directory
 const newVideoSrc = "/media/demo-clip.mp4";
-const screenRecordingSrc = "/media/Screen Recording 2025-07-14 at 3.48.57 PM_1752522596220.mov";
+const screenRecordingSrc = "/Aircraft Defect Analysis.mp4";
 
 interface VideoPlayerProps {
   onProgressChange?: (progress: number) => void;
