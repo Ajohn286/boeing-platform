@@ -68,6 +68,17 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
+  // On Vercel, static files are served by the platform, not by Express
+  // This function is only used for local development or traditional deployments
+  // For Vercel, we don't need to serve static files from the serverless function
+  
+  // Only serve static files if we're not on Vercel
+  if (process.env.VERCEL) {
+    // On Vercel, let the platform handle static files
+    // The serverless function should only handle API routes
+    return;
+  }
+
   const distPath = path.resolve(import.meta.dirname, "public");
 
   if (!fs.existsSync(distPath)) {
