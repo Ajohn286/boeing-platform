@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 // If you have a Toaster or toast hook, import it:
 // import { useToast } from '@/hooks/use-toast';
 
@@ -12,9 +12,9 @@ type Defect = {
 };
 
 // Video now served from public/media directory
-const screenRecordingSrc = "/media/screen-recording.mp4";
+const turbofanVideoSrc = "/media/turbofan.mp4.mp4";
 
-const videoSrc = screenRecordingSrc;
+const videoSrc = turbofanVideoSrc;
 const videoDefects: Defect[] = [
   { type: 'Crack', severity: 'High', location: 'Fuselage', box: { left: 100, top: 60, width: 80, height: 40 }, time: 2 },
   { type: 'Dent', severity: 'Medium', location: 'Wing', box: { left: 200, top: 120, width: 60, height: 30 }, time: 5 },
@@ -27,6 +27,45 @@ const initialMetrics = {
   precision: 0.89,
   recall: 0.91,
   f1: 0.90,
+};
+
+// YOLO Model Evaluation Data
+const yoloEvaluationData = {
+  training: {
+    epochs: 100,
+    batchSize: 16,
+    learningRate: 0.001,
+    loss: 0.0234,
+    valLoss: 0.0312,
+    trainingTime: '2h 34m',
+    gpuUtilization: '87%',
+    memoryUsage: '8.2GB'
+  },
+  evaluation: {
+    mAP50: 0.894,
+    mAP50_95: 0.723,
+    precision: 0.891,
+    recall: 0.912,
+    f1Score: 0.901,
+    inferenceTime: '23ms',
+    fps: 43.5,
+    totalDetections: 1247,
+    falsePositives: 89,
+    falseNegatives: 67,
+    truePositives: 1091
+  },
+  classPerformance: [
+    { name: 'Crack', precision: 0.92, recall: 0.89, f1: 0.90, count: 456 },
+    { name: 'Dent', precision: 0.87, recall: 0.91, f1: 0.89, count: 234 },
+    { name: 'Warping', precision: 0.85, recall: 0.88, f1: 0.86, count: 189 },
+    { name: 'Corrosion', precision: 0.91, recall: 0.94, f1: 0.92, count: 368 }
+  ],
+  confusionMatrix: {
+    truePositives: 1091,
+    falsePositives: 89,
+    falseNegatives: 67,
+    trueNegatives: 12450
+  }
 };
 
 const inspectionResults = [
@@ -51,6 +90,9 @@ export default function QualityInspection() {
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [metrics, setMetrics] = useState(initialMetrics);
   const [inlineMessage, setInlineMessage] = useState<string | null>(null);
+  const [showMetricsPopup, setShowMetricsPopup] = useState(false);
+  const [showDetailedReport, setShowDetailedReport] = useState(false);
+  const [evaluationType, setEvaluationType] = useState<'training' | 'evaluation' | null>(null);
 
   // If you have a toast hook, use it:
   // const { toast } = useToast();
@@ -86,7 +128,9 @@ export default function QualityInspection() {
         f1: Math.min(1, +(m.f1 + 0.01).toFixed(2)),
       }));
       setInlineMessage('Model training complete! Metrics updated.');
-      // No alert or toast
+      setEvaluationType('training');
+      setShowMetricsPopup(true);
+      setShowDetailedReport(true);
     }, 1500);
   };
 
@@ -96,7 +140,9 @@ export default function QualityInspection() {
     setTimeout(() => {
       setIsEvaluating(false);
       setInlineMessage('Evaluation complete! See results below.');
-      // No alert or toast
+      setEvaluationType('evaluation');
+      setShowMetricsPopup(true);
+      setShowDetailedReport(true);
     }, 1200);
   };
 
@@ -124,6 +170,9 @@ export default function QualityInspection() {
               width={640}
               height={320}
               controls
+              loop
+              autoPlay
+              muted
               onTimeUpdate={handleTimeUpdate}
               className="object-cover w-full h-full"
               style={{ filter: 'grayscale(0.2)' }}
@@ -261,6 +310,245 @@ export default function QualityInspection() {
           </BarChart>
         </ResponsiveContainer>
       </div>
+
+      {/* YOLO Model Evaluation Report */}
+      {showDetailedReport && (
+        <div className="bg-white border rounded-xl p-6 shadow-sm mt-8">
+          <h2 className="font-semibold text-xl mb-6">YOLO Model Evaluation Report</h2>
+          
+          {/* Training Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-3">Training Configuration</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Epochs:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.epochs}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Batch Size:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.batchSize}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Learning Rate:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.learningRate}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Training Time:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.trainingTime}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>GPU Utilization:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.gpuUtilization}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Memory Usage:</span>
+                  <span className="font-semibold">{yoloEvaluationData.training.memoryUsage}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-3">Performance Metrics</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>mAP@0.5:</span>
+                  <span className="font-semibold text-green-600">{(yoloEvaluationData.evaluation.mAP50 * 100).toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>mAP@0.5:0.95:</span>
+                  <span className="font-semibold text-blue-600">{(yoloEvaluationData.evaluation.mAP50_95 * 100).toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Precision:</span>
+                  <span className="font-semibold text-purple-600">{(yoloEvaluationData.evaluation.precision * 100).toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Recall:</span>
+                  <span className="font-semibold text-orange-600">{(yoloEvaluationData.evaluation.recall * 100).toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>F1 Score:</span>
+                  <span className="font-semibold text-red-600">{(yoloEvaluationData.evaluation.f1Score * 100).toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Inference Time:</span>
+                  <span className="font-semibold">{yoloEvaluationData.evaluation.inferenceTime}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>FPS:</span>
+                  <span className="font-semibold">{yoloEvaluationData.evaluation.fps}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Class Performance Chart */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-lg mb-4">Class Performance Analysis</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-semibold mb-3">Precision by Class</h4>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={yoloEvaluationData.classPerformance}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="precision" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-semibold mb-3">Detection Count by Class</h4>
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie
+                      data={yoloEvaluationData.classPerformance}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="count"
+                    >
+                      {yoloEvaluationData.classPerformance.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={['#8884d8', '#82ca9d', '#ffc658', '#ff7300'][index % 4]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Confusion Matrix */}
+          <div className="mb-8">
+            <h3 className="font-semibold text-lg mb-4">Confusion Matrix</h3>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="bg-green-100 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-green-700">{yoloEvaluationData.confusionMatrix.truePositives}</div>
+                  <div className="text-sm text-green-600">True Positives</div>
+                </div>
+                <div className="bg-red-100 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-red-700">{yoloEvaluationData.confusionMatrix.falsePositives}</div>
+                  <div className="text-sm text-red-600">False Positives</div>
+                </div>
+                <div className="bg-orange-100 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-orange-700">{yoloEvaluationData.confusionMatrix.falseNegatives}</div>
+                  <div className="text-sm text-orange-600">False Negatives</div>
+                </div>
+                <div className="bg-blue-100 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-blue-700">{yoloEvaluationData.confusionMatrix.trueNegatives}</div>
+                  <div className="text-sm text-blue-600">True Negatives</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Detection Summary */}
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-semibold text-lg mb-3">Detection Summary</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-blue-600">{yoloEvaluationData.evaluation.totalDetections}</div>
+                <div className="text-sm text-gray-600">Total Detections</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-green-600">{yoloEvaluationData.evaluation.truePositives}</div>
+                <div className="text-sm text-gray-600">Correct Detections</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-red-600">{yoloEvaluationData.evaluation.falsePositives}</div>
+                <div className="text-sm text-gray-600">False Alarms</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-orange-600">{yoloEvaluationData.evaluation.falseNegatives}</div>
+                <div className="text-sm text-gray-600">Missed Defects</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Metrics Popup */}
+      {showMetricsPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">
+                {evaluationType === 'training' ? 'YOLO Training Results' : 'YOLO Evaluation Results'}
+              </h2>
+              <button
+                onClick={() => setShowMetricsPopup(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-blue-50 rounded-lg p-4 text-center">
+                <div className="text-3xl font-bold text-blue-600">
+                  {(yoloEvaluationData.evaluation.mAP50 * 100).toFixed(1)}%
+                </div>
+                <div className="text-sm text-blue-600">mAP@0.5</div>
+              </div>
+              <div className="bg-green-50 rounded-lg p-4 text-center">
+                <div className="text-3xl font-bold text-green-600">
+                  {(yoloEvaluationData.evaluation.f1Score * 100).toFixed(1)}%
+                </div>
+                <div className="text-sm text-green-600">F1 Score</div>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span>Precision:</span>
+                <span className="font-semibold">{(yoloEvaluationData.evaluation.precision * 100).toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Recall:</span>
+                <span className="font-semibold">{(yoloEvaluationData.evaluation.recall * 100).toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Inference Time:</span>
+                <span className="font-semibold">{yoloEvaluationData.evaluation.inferenceTime}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>FPS:</span>
+                <span className="font-semibold">{yoloEvaluationData.evaluation.fps}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Total Detections:</span>
+                <span className="font-semibold">{yoloEvaluationData.evaluation.totalDetections}</span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={() => setShowMetricsPopup(false)}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowMetricsPopup(false);
+                  // Scroll to detailed report
+                  document.querySelector('[data-detailed-report]')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+              >
+                View Full Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

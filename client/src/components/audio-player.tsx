@@ -4,7 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Speaker, Lightbulb, X } from "lucide-react";
 import { useDemoTimer } from "@/hooks/use-demo-timer";
 // Audio now served from public/media directory
-const humeAudioSrc = "/media/hume-audio.wav";
+const humeAudioSrc = "/media/HumeAI_2025Jul14_52882d3c-7bb6-4eee-8ba4-bfd135afef0713157628_574a9b21-4fc2-4f6a-af82-5d39150776ed_1752521569034.wav";
 
 interface AgentMessage {
   id: string;
@@ -211,6 +211,18 @@ export default function AudioPlayer() {
           primed = true;
           console.log('User interaction detected - unlocking audio for deployment');
           
+          // Try to auto-play audio on first user interaction
+          if (audioRef.current && !isPlaying) {
+            try {
+              console.log('Attempting to auto-play audio on user interaction...');
+              await audioRef.current.play();
+              setIsPlaying(true);
+              console.log('Audio auto-played successfully on user interaction');
+            } catch (error) {
+              console.log('Auto-play on user interaction failed:', error);
+            }
+          }
+          
           // Enhanced deployment unlock strategy
           try {
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -272,8 +284,44 @@ export default function AudioPlayer() {
       setTimeout(handleInteraction, 1000);
       
       setAudioLoaded(true);
+      
+      // Auto-play audio on page load
+      const autoPlayAudio = async () => {
+        if (audioRef.current) {
+          try {
+            console.log('Attempting to auto-play audio on page load...');
+            
+            // Wait for audio to be ready
+            await new Promise((resolve) => {
+              if (audioRef.current!.readyState >= 3) {
+                resolve(undefined);
+              } else {
+                audioRef.current!.addEventListener('canplaythrough', resolve, { once: true });
+              }
+            });
+            
+            // Set up audio for autoplay
+            audioRef.current.currentTime = 0;
+            audioRef.current.volume = volume / 100;
+            audioRef.current.muted = false;
+            
+            // Attempt to play
+            await audioRef.current.play();
+            setIsPlaying(true);
+            console.log('Audio auto-played successfully on page load');
+            
+          } catch (error) {
+            console.log('Auto-play failed, will wait for user interaction:', error);
+            // Set up for manual play on user interaction
+            setIsPlaying(false);
+          }
+        }
+      };
+      
+      // Try autoplay after a short delay to ensure everything is loaded
+      setTimeout(autoPlayAudio, 1000);
     }
-  }, [audioLoaded]);
+  }, [audioLoaded, volume]);
 
   // Handle audio events
   useEffect(() => {
@@ -296,18 +344,37 @@ export default function AudioPlayer() {
       setIsPlaying(false);
     };
 
+    const handleCanPlayThrough = async () => {
+      // Auto-play audio when it's ready to play
+      if (!isPlaying && audioLoaded) {
+        try {
+          console.log('Audio ready to play - attempting autoplay...');
+          audio.currentTime = 0;
+          audio.volume = volume / 100;
+          audio.muted = false;
+          await audio.play();
+          setIsPlaying(true);
+          console.log('Audio auto-played successfully via canplaythrough event');
+        } catch (error) {
+          console.log('Autoplay via canplaythrough failed:', error);
+        }
+      }
+    };
+
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
+    audio.addEventListener('canplaythrough', handleCanPlayThrough);
 
     return () => {
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('canplaythrough', handleCanPlayThrough);
     };
-  }, [audioLoaded]);
+  }, [audioLoaded, isPlaying, volume]);
 
 
 

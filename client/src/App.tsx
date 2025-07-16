@@ -19,6 +19,7 @@ import Login from "@/pages/Login";
 import NotFound from "@/pages/not-found";
 import QualityInspection from './pages/QualityInspection';
 import SensorDataUI from './pages/SensorDataUI';
+import WatchTower from './pages/WatchTower';
 import AgenticClaimQueue from "@/pages/AgenticClaimQueue";
 import AgenticClaimDetail from "@/pages/AgenticClaimDetail";
 import AgenticAgentMobilization from "@/pages/AgenticAgentMobilization";
@@ -115,6 +116,7 @@ function Router() {
             <Route path="/predictive-maintenance" component={WealthManagement} />
             <Route path="/quality-inspection" component={QualityInspection} />
             <Route path="/sensor-monitoring" component={SensorDataUI} />
+            <Route path="/watch-tower" component={WatchTower} />
             
             {/* Agentic Four Box Demo Routes */}
             <Route path="/agentic-claim-queue" component={AgenticClaimQueue} />
