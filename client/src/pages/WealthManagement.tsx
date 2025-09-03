@@ -141,7 +141,7 @@ export default function PredictiveMaintenance() {
       flightHours: 2847,
       healthScore: 94.2,
       alerts: 2,
-      location: "Toulouse, France"
+      location: "North Charleston, South Carolina"
     },
     {
       id: "737-MAX-8-002",
@@ -153,7 +153,7 @@ export default function PredictiveMaintenance() {
       flightHours: 1892,
       healthScore: 87.5,
       alerts: 5,
-      location: "Hamburg, Germany"
+      location: "Everrett, Washington"
     },
     {
       id: "747-8F-003",
