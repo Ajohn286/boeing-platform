@@ -14,7 +14,7 @@ export default function ProcessBuilder() {
       </div>
       <div className="h-[calc(100vh-4rem)]">
         <iframe
-          src="https://boeingneuron.vercel.app/process-builder"
+          src="https://boeing-nueron-v3.vercel.app/process-builder"
           className="w-full h-full border-0"
           title="Boeing Control Tower Process Builder"
           allowFullScreen
