@@ -40,7 +40,7 @@ export default function WatchTower() {
       </div>
       <div className="h-[calc(100vh-4rem)]">
         <iframe
-          src="https://airbuswatchtower.vercel.app/"
+          src="https://boeingneuron.vercel.app/"
           className="w-full h-full border-0"
           title="Boeing Control Tower"
           allowFullScreen
