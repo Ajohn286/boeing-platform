@@ -39,7 +39,7 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
   const [progressUpdate60Triggered, setProgressUpdate60Triggered] = useState(false);
   const [progressUpdate75Triggered, setProgressUpdate75Triggered] = useState(false);
   const [progressUpdate85Triggered, setProgressUpdate85Triggered] = useState(false);
-  
+
   // Agent log state
   const [agentMessages, setAgentMessages] = useState<AgentMessage[]>([]);
   const [messageCount, setMessageCount] = useState(0);
@@ -47,7 +47,7 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const agentLogRef = useRef<HTMLDivElement>(null);
-  
+
   // Use centralized demo timer
   const { currentTime: demoTime, isEventTriggered, registerEvent } = useDemoTimer();
 
@@ -75,17 +75,17 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
       id: `video-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       agentName,
       message,
-      timestamp: new Date().toLocaleTimeString('en-US', { 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
+      timestamp: new Date().toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
       }),
       type
     };
     setAgentMessages(prev => [...prev, newMessage]);
     setMessageCount(prev => prev + 1);
-    
+
     // Auto-scroll to bottom with smooth behavior
     setTimeout(() => {
       if (agentLogRef.current) {
@@ -115,10 +115,10 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
       onProgressChange?.(20);
       setShowInsight(true);
       setInsightTriggered(true);
-      
+
       // Add agent message for this insight
       addAgentMessage('Structural Assessment AI', 'Critical crack detected in landing gear strut exceeding safety threshold', 'recommendation');
-      
+
       // Auto-dismiss after 5 seconds
       setTimeout(() => {
         setShowInsight(false);
@@ -165,7 +165,7 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
       setThirdInsightTriggered(true);
       setShowThirdInsight(true);
       addAgentMessage('Safety Threshold AI', 'Crack size exceeds 2 cm safety threshold - immediate maintenance required', 'detection');
-      
+
       // Auto-dismiss after 5 seconds
       setTimeout(() => {
         setShowThirdInsight(false);
@@ -175,7 +175,7 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
     // Add more comprehensive agent messages
     if (isEventTriggered('progress-update-40') && !progressUpdate40Triggered) {
       setTimeout(() => addAgentMessage('Fatigue Analysis AI', 'Analyzing material fatigue and stress concentration patterns', 'analysis'), 500);
-      setTimeout(() => addAgentMessage('Compliance Assessment AI', 'Reviewing maintenance requirements per Airbus Manual Section 05-10', 'recommendation'), 2000);
+      setTimeout(() => addAgentMessage('Compliance Assessment AI', 'Reviewing maintenance requirements per Boeing Manual Section 05-10', 'recommendation'), 2000);
     }
 
     // Progress update at 42 seconds
@@ -270,191 +270,191 @@ export default function VideoPlayer({ onProgressChange, onVideoEnd }: VideoPlaye
         {/* Video Section - 80% */}
         <div className="flex-1 relative flex flex-col items-center justify-center bg-black/50" style={{ width: '80%' }}>
           {/* First Insight Popup - AI Speech Bubble */}
-        {showInsight && (
-          <div className="absolute top-4 left-4 right-4 z-20">
-            <div className="relative">
-              {/* AI Agent Avatar */}
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
-                  <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                
-                {/* Speech Bubble */}
-                <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
-                  {/* Speech bubble tail */}
-                  <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
-                  
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 pr-2">
-                      <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
-                      <p className="text-sm text-white leading-relaxed">
-                        A220 landing gear strut shows critical structural crack requiring immediate grounding and replacement
-                      </p>
+          {showInsight && (
+            <div className="absolute top-4 left-4 right-4 z-20">
+              <div className="relative">
+                {/* AI Agent Avatar */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowInsight(false)}
-                      className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
+                  </div>
+
+                  {/* Speech Bubble */}
+                  <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
+                    {/* Speech bubble tail */}
+                    <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
+
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 pr-2">
+                        <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
+                        <p className="text-sm text-white leading-relaxed">
+                          737 landing gear strut shows critical structural crack requiring immediate grounding and replacement
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowInsight(false)}
+                        className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Third Insight Popup - AI Speech Bubble */}
-        {showThirdInsight && (
-          <div className="absolute top-4 left-4 right-4 z-20">
-            <div className="relative">
-              {/* AI Agent Avatar */}
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
-                  <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                
-                {/* Speech Bubble */}
-                <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
-                  {/* Speech bubble tail */}
-                  <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
-                  
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 pr-2">
-                      <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
-                      <p className="text-sm text-white leading-relaxed">
-                        Landing gear strut crack measures 2.3 cm, exceeding 2 cm safety threshold per Airbus Manual Section 05-10
-                      </p>
+          {/* Third Insight Popup - AI Speech Bubble */}
+          {showThirdInsight && (
+            <div className="absolute top-4 left-4 right-4 z-20">
+              <div className="relative">
+                {/* AI Agent Avatar */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowThirdInsight(false)}
-                      className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
+                  </div>
+
+                  {/* Speech Bubble */}
+                  <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
+                    {/* Speech bubble tail */}
+                    <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
+
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 pr-2">
+                        <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
+                        <p className="text-sm text-white leading-relaxed">
+                          Landing gear strut crack measures 2.3 cm, exceeding 2 cm safety threshold per Boeing Manual Section 05-10
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowThirdInsight(false)}
+                        className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {!selectedFile ? (
-          <video
-            ref={videoRef}
-            className="w-full h-full object-contain"
-            src={screenRecordingSrc}
-            autoPlay
-            muted
-            loop
-            controls
-            onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-            onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onEnded={() => setIsPlaying(false)}
-          />
-        ) : (
-          <>
+          {!selectedFile ? (
             <video
               ref={videoRef}
               className="w-full h-full object-contain"
+              src={screenRecordingSrc}
+              autoPlay
+              muted
+              loop
+              controls
               onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
               onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
               onEnded={() => setIsPlaying(false)}
             />
-            
-            {/* Video Controls Overlay */}
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="bg-black/70 backdrop-blur-sm rounded-lg p-3">
-                <div className="flex items-center justify-between mb-2 text-sm text-white">
-                  <span>{formatTime(currentTime)}</span>
-                  <span>{formatTime(duration)}</span>
-                </div>
-                <Slider
-                  value={[currentTime]}
-                  max={duration}
-                  step={1}
-                  className="mb-3"
-                  onValueChange={(value) => {
-                    if (videoRef.current) {
-                      videoRef.current.currentTime = value[0];
-                      setCurrentTime(value[0]);
-                    }
-                  }}
-                />
-                <div className="flex items-center justify-center space-x-4">
-                  <Button variant="ghost" size="sm" className="text-white hover:text-blue-400">
-                    <SkipBack className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={togglePlay} className="text-white hover:text-blue-400 text-xl">
-                    {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                  </Button>
-                  <Button variant="ghost" size="sm" className="text-white hover:text-blue-400">
-                    <SkipForward className="w-4 h-4" />
-                  </Button>
-                  <div className="flex items-center space-x-2 ml-4">
-                    <Volume2 className="w-4 h-4 text-white" />
-                    <Slider
-                      value={[volume]}
-                      max={100}
-                      step={1}
-                      className="w-16"
-                      onValueChange={(value) => {
-                        setVolume(value[0]);
-                        if (videoRef.current) {
-                          videoRef.current.volume = value[0] / 100;
-                        }
-                      }}
-                    />
+          ) : (
+            <>
+              <video
+                ref={videoRef}
+                className="w-full h-full object-contain"
+                onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+                onEnded={() => setIsPlaying(false)}
+              />
+
+              {/* Video Controls Overlay */}
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="bg-black/70 backdrop-blur-sm rounded-lg p-3">
+                  <div className="flex items-center justify-between mb-2 text-sm text-white">
+                    <span>{formatTime(currentTime)}</span>
+                    <span>{formatTime(duration)}</span>
                   </div>
-                  <Button 
-                    onClick={() => {
-                      setSelectedFile(null);
+                  <Slider
+                    value={[currentTime]}
+                    max={duration}
+                    step={1}
+                    className="mb-3"
+                    onValueChange={(value) => {
+                      if (videoRef.current) {
+                        videoRef.current.currentTime = value[0];
+                        setCurrentTime(value[0]);
+                      }
                     }}
-                    variant="ghost" 
-                    size="sm" 
-                    className="text-white hover:text-blue-400 ml-4"
-                  >
-                    Default Video
-                  </Button>
+                  />
+                  <div className="flex items-center justify-center space-x-4">
+                    <Button variant="ghost" size="sm" className="text-white hover:text-blue-400">
+                      <SkipBack className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={togglePlay} className="text-white hover:text-blue-400 text-xl">
+                      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-white hover:text-blue-400">
+                      <SkipForward className="w-4 h-4" />
+                    </Button>
+                    <div className="flex items-center space-x-2 ml-4">
+                      <Volume2 className="w-4 h-4 text-white" />
+                      <Slider
+                        value={[volume]}
+                        max={100}
+                        step={1}
+                        className="w-16"
+                        onValueChange={(value) => {
+                          setVolume(value[0]);
+                          if (videoRef.current) {
+                            videoRef.current.volume = value[0] / 100;
+                          }
+                        }}
+                      />
+                    </div>
+                    <Button
+                      onClick={() => {
+                        setSelectedFile(null);
+                      }}
+                      variant="ghost"
+                      size="sm"
+                      className="text-white hover:text-blue-400 ml-4"
+                    >
+                      Default Video
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
-        {!selectedFile && !newVideoSrc && (
-          <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center bg-gray-500/20 rounded-full">
-              <Play className="w-12 h-12 text-gray-500" />
+          {!selectedFile && !newVideoSrc && (
+            <div className="text-center">
+              <div className="w-24 h-24 mx-auto mb-4 flex items-center justify-center bg-gray-500/20 rounded-full">
+                <Play className="w-12 h-12 text-gray-500" />
+              </div>
+              <p className="text-gray-400 text-lg mb-2">No video loaded</p>
+              <p className="text-gray-500 text-sm mb-6">Click to select video file</p>
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Select Video
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
             </div>
-            <p className="text-gray-400 text-lg mb-2">No video loaded</p>
-            <p className="text-gray-500 text-sm mb-6">Click to select video file</p>
-            <Button 
-              onClick={() => fileInputRef.current?.click()}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Select Video
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="video/*"
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-          </div>
-        )}
+          )}
         </div>
 
         {/* Agent Log Section - 20% */}

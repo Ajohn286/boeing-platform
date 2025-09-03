@@ -1,8 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  TrendingUp, 
-  Database, 
-  Brain, 
+import {
+  TrendingUp,
+  Database,
+  Brain,
   Clock,
   Plus,
   CheckCircle,
@@ -21,12 +21,12 @@ import {
   Cpu,
   Palette
 } from "lucide-react";
-import { 
-  StatusBadge, 
-  StatusAlert, 
-  HealthIndicator, 
-  TaskStatus, 
-  MetricCard 
+import {
+  StatusBadge,
+  StatusAlert,
+  HealthIndicator,
+  TaskStatus,
+  MetricCard
 } from "@/components/StatusComponents";
 
 export default function Platform() {
@@ -41,7 +41,7 @@ export default function Platform() {
       iconColor: "text-blue-600"
     },
     {
-      title: "Predictive Alerts", 
+      title: "Predictive Alerts",
       value: "156",
       change: "-12",
       changeText: "reduced this week",
@@ -51,7 +51,7 @@ export default function Platform() {
     },
     {
       title: "Quality Pass Rate",
-      value: "99.4%", 
+      value: "99.4%",
       change: "+0.3%",
       changeText: "inspection accuracy",
       icon: Eye,
@@ -61,7 +61,7 @@ export default function Platform() {
     {
       title: "Supply Chain Efficiency",
       value: "94.2%",
-      change: "+1.8%", 
+      change: "+1.8%",
       changeText: "JIT delivery rate",
       icon: Truck,
       iconBg: "bg-orange-100",
@@ -72,21 +72,21 @@ export default function Platform() {
   const recentActivities = [
     {
       title: "Engine health alert resolved",
-      subtitle: 'A350-1000 engine sensor anomaly • 1 hour ago',
+      subtitle: '787-10 engine sensor anomaly • 1 hour ago',
       icon: Wrench,
       iconBg: "bg-green-100",
       iconColor: "text-green-600"
     },
     {
       title: "Quality inspection completed",
-      subtitle: "Wing assembly batch #A320-2024-089 • 3 hours ago",
+      subtitle: "Wing assembly batch #737-2024-089 • 3 hours ago",
       icon: Eye,
-      iconBg: "bg-purple-100", 
+      iconBg: "bg-purple-100",
       iconColor: "text-purple-600"
     },
     {
       title: "Digital twin simulation",
-      subtitle: "A380 structural stress analysis • 5 hours ago",
+      subtitle: "747-8F structural stress analysis • 5 hours ago",
       icon: Cpu,
       iconBg: "bg-blue-100",
       iconColor: "text-blue-600"
@@ -102,6 +102,21 @@ export default function Platform() {
   return (
     <div className="content-fade-in">
       <div className="max-w-7xl mx-auto">
+        {/* Header with Boeing Logo */}
+        <div className="mb-8">
+          <div className="flex items-center">
+            <img
+              src="/media/Boeing_logo.png"
+              alt="Boeing"
+              className="h-10 w-auto mr-6"
+            />
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Operations Platform</h1>
+              <p className="text-lg text-gray-600 mt-2">Comprehensive fleet management and predictive maintenance dashboard</p>
+            </div>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {statsCards.map((card, index) => {
@@ -135,7 +150,7 @@ export default function Platform() {
             );
           })}
         </div>
-        
+
         {/* Recent Activity and System Health */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card className="bg-white border-border">
@@ -165,7 +180,7 @@ export default function Platform() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="bg-white border-border">
             <div className="px-6 py-4 border-b border-border">
               <h3 className="text-lg font-semibold text-foreground">System Health</h3>
@@ -178,15 +193,14 @@ export default function Platform() {
                       <span className="text-sm font-medium text-foreground">
                         {metric.name}
                       </span>
-                      <span className={`text-sm font-medium ${
-                        metric.name === "Memory Usage" ? "text-yellow-600" : 
+                      <span className={`text-sm font-medium ${metric.name === "Memory Usage" ? "text-yellow-600" :
                         metric.name === "API Response Time" ? "text-green-600" : "text-blue-600"
-                      }`}>
+                        }`}>
                         {metric.value}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                      <div 
+                      <div
                         className={`${metric.color} h-2 rounded-full`}
                         style={{ width: `${metric.percentage}%` }}
                       />
@@ -198,7 +212,7 @@ export default function Platform() {
           </Card>
         </div>
 
-        {/* Airbus Operations Dashboard */}
+        {/* Boeing Operations Dashboard */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
           {/* AI System Health */}
           <Card className="bg-white border-border">
@@ -233,19 +247,19 @@ export default function Platform() {
             </div>
             <CardContent className="p-6 space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">A350-1000</span>
+                <span className="text-sm font-medium">787-10</span>
                 <span className="text-green-600 font-semibold">99.2%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">A320neo</span>
+                <span className="text-sm font-medium">737 MAX 8</span>
                 <span className="text-green-600 font-semibold">98.8%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">A380</span>
+                <span className="text-sm font-medium">747-8F</span>
                 <span className="text-green-600 font-semibold">97.9%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">A330neo</span>
+                <span className="text-sm font-medium">777-300ER</span>
                 <span className="text-green-600 font-semibold">98.5%</span>
               </div>
             </CardContent>
@@ -260,16 +274,16 @@ export default function Platform() {
           <MetricCard title="Document Processing" value="96%" change={1.8} trend="up" />
         </div>
 
-        {/* Airbus Alerts */}
+        {/* Boeing Alerts */}
         <div className="space-y-4 mt-6">
           <StatusAlert status="success" title="Predictive Maintenance Alert Resolved">
-            Engine sensor anomaly on A350-1000 successfully addressed, preventing unscheduled downtime.
+            Engine sensor anomaly on 787-10 successfully addressed, preventing unscheduled downtime.
           </StatusAlert>
-          
+
           <StatusAlert status="warning" title="Quality Inspection Required">
-            Batch #A320-2024-089 requires manual review due to computer vision uncertainty.
+            Batch #737-2024-089 requires manual review due to computer vision uncertainty.
           </StatusAlert>
-          
+
           <StatusAlert status="info" title="Supply Chain Optimization">
             AI-optimized delivery schedule reduces lead time by 15% for critical components.
           </StatusAlert>

@@ -21,7 +21,7 @@ const pageContent = {
   '/sensor-monitoring': { title: 'Sensor Monitoring', subtitle: 'Real-time aircraft sensor analysis with AI anomaly detection' },
   '/predictive-maintenance': { title: 'Predictive Maintenance', subtitle: 'AI-powered maintenance forecasting and optimization' },
   '/quality-inspection': { title: 'Quality Inspection', subtitle: 'Computer vision quality control and defect detection' },
-  '/watch-tower': { title: 'Watch Tower', subtitle: 'Airbus Control Tower - Fleet monitoring and management' },
+  '/watch-tower': { title: 'Watch Tower', subtitle: 'Boeing Control Tower - Fleet monitoring and management' },
 };
 
 interface HeaderProps {
@@ -74,7 +74,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
           >
             <Settings className="h-5 w-5" />
           </Button>
-          
+
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -1,5 +1,5 @@
 // *******************
-// Project        : Airbus Review LHM  
+// Project        : Boeing Review LHM  
 // File           : client/src/components/LocalVideoPlayer.tsx
 // Version        : v1.0  Last update: 01/08/2025 15:45 EST
 // Status         : Supports: UV | PNP
@@ -96,7 +96,7 @@ export const LocalVideoPlayer: React.FC<LocalVideoPlayerProps> = ({
       {title && (
         <h3 className="text-white text-lg font-semibold mb-2">{title}</h3>
       )}
-      
+
       <div className="relative bg-black rounded-lg overflow-hidden">
         <video
           ref={videoRef}
@@ -129,7 +129,7 @@ export const LocalVideoPlayer: React.FC<LocalVideoPlayerProps> = ({
                 >
                   {isPlaying ? <Pause size={20} /> : <Play size={20} />}
                 </button>
-                
+
                 <button
                   onClick={toggleMute}
                   title={isMuted ? "Unmute video" : "Mute video"}
@@ -138,7 +138,7 @@ export const LocalVideoPlayer: React.FC<LocalVideoPlayerProps> = ({
                   {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
                 </button>
               </div>
-              
+
               <button
                 onClick={toggleFullscreen}
                 title="Enter fullscreen"
@@ -155,7 +155,7 @@ export const LocalVideoPlayer: React.FC<LocalVideoPlayerProps> = ({
 };
 
 // Example usage component
-export const AirbusVideoDemo: React.FC = () => {
+export const BoeingVideoDemo: React.FC = () => {
   return (
     <div className="space-y-6">
       <LocalVideoPlayer
@@ -164,7 +164,7 @@ export const AirbusVideoDemo: React.FC = () => {
         controls={true}
         className="mb-4"
       />
-      
+
       <LocalVideoPlayer
         videoFileName="screen-recording.mp4"
         title="Platform Walkthrough"

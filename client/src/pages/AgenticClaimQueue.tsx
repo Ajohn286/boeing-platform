@@ -3,10 +3,10 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  ArrowRight, 
-  Clock, 
-  AlertTriangle, 
+import {
+  ArrowRight,
+  Clock,
+  AlertTriangle,
   CheckCircle,
   Plane,
   MapPin,
@@ -33,9 +33,9 @@ interface MaintenanceAlert {
 
 const mockAlerts: MaintenanceAlert[] = [
   {
-    id: "AIR-A320-4512",
-    aircraftId: "A220-300",
-    aircraftType: "Airbus A220-300",
+    id: "AIR-737-4512",
+    aircraftId: "737-700",
+    aircraftType: "Boeing 737-700",
     priority: "critical",
     detectionDate: "2025-01-15",
     detectionTime: "14:30",
@@ -45,9 +45,9 @@ const mockAlerts: MaintenanceAlert[] = [
     estimatedDowntime: "8 hours"
   },
   {
-    id: "AIR-A320-4513",
-    aircraftId: "A220-100",
-    aircraftType: "Airbus A220-100", 
+    id: "AIR-737-4513",
+    aircraftId: "737-600",
+    aircraftType: "Boeing 737-600",
     priority: "high",
     detectionDate: "2025-01-15",
     detectionTime: "12:15",
@@ -57,9 +57,9 @@ const mockAlerts: MaintenanceAlert[] = [
     estimatedDowntime: "4 hours"
   },
   {
-    id: "AIR-A320-4514",
-    aircraftId: "A220-300",
-    aircraftType: "Airbus A220-300",
+    id: "AIR-737-4514",
+    aircraftId: "737-700",
+    aircraftType: "Boeing 737-700",
     priority: "medium",
     detectionDate: "2025-01-15",
     detectionTime: "10:45",
@@ -98,7 +98,7 @@ export default function AgenticClaimQueue() {
   const filteredAlerts = mockAlerts.filter(alert => {
     const matchesPriority = selectedPriority === 'all' || alert.priority === selectedPriority;
     const matchesSearch = alert.aircraftId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         alert.description.toLowerCase().includes(searchQuery.toLowerCase());
+      alert.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesPriority && matchesSearch;
   });
 
@@ -113,9 +113,9 @@ export default function AgenticClaimQueue() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <img 
-                src={logoPath} 
-                alt="Invisible Logo" 
+              <img
+                src={logoPath}
+                alt="Invisible Logo"
                 className="h-8 w-auto"
               />
               <div className="ml-6">
@@ -123,7 +123,7 @@ export default function AgenticClaimQueue() {
                 <p className="text-sm text-gray-500">AI-Powered Aircraft Predictive Maintenance</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-500">
                 <Activity className="h-4 w-4" />
@@ -150,7 +150,7 @@ export default function AgenticClaimQueue() {
               />
             </div>
           </div>
-          
+
           <div className="flex gap-2">
             <Button
               variant={selectedPriority === 'all' ? 'default' : 'outline'}
@@ -189,8 +189,8 @@ export default function AgenticClaimQueue() {
         {/* Alerts Grid */}
         <div className="grid gap-6">
           {filteredAlerts.map((alert) => (
-            <Card 
-              key={alert.id} 
+            <Card
+              key={alert.id}
               className="cursor-pointer hover:shadow-lg transition-shadow duration-200 border-l-4 border-l-red-500"
               onClick={() => handleAlertClick(alert.id)}
             >
@@ -208,7 +208,7 @@ export default function AgenticClaimQueue() {
                         {alert.status.replace('-', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                       </Badge>
                     </div>
-                    
+
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <Plane className="h-4 w-4" />
@@ -224,20 +224,20 @@ export default function AgenticClaimQueue() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <ArrowRight className="h-5 w-5 text-gray-400" />
                 </div>
               </CardHeader>
-              
+
               <CardContent className="pt-0">
                 <p className="text-gray-700 mb-3">{alert.description}</p>
-                
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <Clock className="h-4 w-4" />
                     <span>Estimated downtime: {alert.estimatedDowntime}</span>
                   </div>
-                  
+
                   <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                     Review Alert
                   </Button>

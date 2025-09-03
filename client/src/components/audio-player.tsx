@@ -28,7 +28,7 @@ export default function AudioPlayer() {
   const [showInsight, setShowInsight] = useState(false);
   const [insightTriggered, setInsightTriggered] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
-  
+
   // Agent log state
   const [agentMessages, setAgentMessages] = useState<AgentMessage[]>([]);
   const [messageCount, setMessageCount] = useState(0);
@@ -46,9 +46,9 @@ export default function AudioPlayer() {
       timestamp: new Date().toLocaleTimeString(),
       type
     };
-    
+
     setAgentMessages(prev => [...prev, newMessage]);
-    
+
     // Auto-scroll to bottom with smooth behavior
     setTimeout(() => {
       if (agentLogRef.current) {
@@ -74,11 +74,11 @@ export default function AudioPlayer() {
       try {
         // Enhanced deployment autoplay strategy
         const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        
+
         if (audioContext.state === 'suspended') {
           await audioContext.resume();
         }
-        
+
         // Create multiple silent buffers to unlock audio
         for (let i = 0; i < 3; i++) {
           const buffer = audioContext.createBuffer(1, 1, 22050);
@@ -87,7 +87,7 @@ export default function AudioPlayer() {
           source.connect(audioContext.destination);
           source.start();
         }
-        
+
         // Additional deployment-specific audio unlock
         if (audioRef.current) {
           const audio = audioRef.current;
@@ -101,26 +101,26 @@ export default function AudioPlayer() {
             console.log('Silent play unlock failed, will use interaction fallback');
           }
         }
-        
+
         console.log('Global audio context primed successfully');
         setUserInteracted(true);
       } catch (error) {
         console.log('Global audio context priming failed, will try on user interaction:', error);
       }
     };
-    
+
     // Multiple priming attempts for deployed environments
     primeGlobalAudioContext();
-    
+
     // Additional priming on document visibility change
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         setTimeout(primeGlobalAudioContext, 100);
       }
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -133,53 +133,53 @@ export default function AudioPlayer() {
       audioRef.current.preload = "auto";
       audioRef.current.muted = false;
       audioRef.current.volume = 0.7;
-      
+
       // Enhanced audio context priming for deployed environments
       const enableAudioContext = async () => {
         setUserInteracted(true);
         console.log('User interaction detected - priming audio context for deployed environment');
-        
+
         if (audioRef.current) {
           try {
             // Create and unlock AudioContext
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-            
+
             if (audioContext.state === 'suspended') {
               await audioContext.resume();
               console.log('AudioContext resumed successfully');
             }
-            
+
             // Enhanced audio element priming for production
             const audio = audioRef.current;
             const originalVolume = audio.volume;
-            
+
             // Set to minimal volume and try to play
             audio.volume = 0.01;
             audio.muted = false;
-            
+
             try {
               // Force load the audio
               audio.load();
               await new Promise((resolve) => {
                 audio.addEventListener('canplaythrough', resolve, { once: true });
               });
-              
+
               // Attempt silent play to unlock audio
               const playPromise = audio.play();
               if (playPromise) {
                 await playPromise;
                 console.log('Audio successfully played for priming');
-                
+
                 // Stop and reset
                 audio.pause();
                 audio.currentTime = 0;
                 audio.volume = originalVolume;
-                
+
                 console.log('Audio context fully primed for production autoplay');
               }
             } catch (playError) {
               console.log('Audio play priming failed, trying alternative approach:', playError);
-              
+
               // Alternative: Create a buffer source for unlocking
               try {
                 const buffer = audioContext.createBuffer(1, 1, 22050);
@@ -191,26 +191,26 @@ export default function AudioPlayer() {
               } catch (bufferError) {
                 console.log('Buffer source unlock failed:', bufferError);
               }
-              
+
               // Reset audio element
               audio.volume = originalVolume;
             }
-            
+
           } catch (error) {
             console.log('Audio context setup failed, but user interaction registered:', error);
           }
         }
       };
-      
+
       // Enhanced user interaction detection for deployed environments
       const interactionEvents = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove', 'mousedown', 'pointerdown', 'touchmove', 'wheel', 'gesturestart', 'focus', 'blur'];
-      
+
       let primed = false;
       const handleInteraction = async () => {
         if (!primed) {
           primed = true;
           console.log('User interaction detected - unlocking audio for deployment');
-          
+
           // Try to auto-play audio on first user interaction
           if (audioRef.current && !isPlaying) {
             try {
@@ -222,12 +222,12 @@ export default function AudioPlayer() {
               console.log('Auto-play on user interaction failed:', error);
             }
           }
-          
+
           // Enhanced deployment unlock strategy
           try {
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
             await audioContext.resume();
-            
+
             // Multiple unlock attempts for robust deployment support
             for (let i = 0; i < 5; i++) {
               const buffer = audioContext.createBuffer(1, 1, 22050);
@@ -236,28 +236,28 @@ export default function AudioPlayer() {
               source.connect(audioContext.destination);
               source.start();
             }
-            
+
             // Try direct audio unlock
             if (audioRef.current) {
               const audio = audioRef.current;
               const originalVolume = audio.volume;
-              
+
               audio.muted = true;
               audio.volume = 0;
-              
+
               try {
                 await audio.play();
                 audio.pause();
                 audio.currentTime = 0;
                 audio.muted = false;
                 audio.volume = originalVolume;
-                
+
                 console.log('Audio successfully unlocked for deployment');
               } catch (e) {
                 console.log('Direct audio unlock failed, context should still be unlocked');
               }
             }
-            
+
             setUserInteracted(true);
             enableAudioContext();
           } catch (error) {
@@ -266,31 +266,31 @@ export default function AudioPlayer() {
           }
         }
       };
-      
+
       // More aggressive event listening for deployment
       interactionEvents.forEach(event => {
         document.addEventListener(event, handleInteraction, { once: true, passive: true });
         window.addEventListener(event, handleInteraction, { once: true, passive: true });
       });
-      
+
       // Immediate priming attempts for deployment
       if (document.hasFocus()) {
         setTimeout(handleInteraction, 50);
       }
-      
+
       // Additional deployment strategies
       setTimeout(handleInteraction, 200);
       setTimeout(handleInteraction, 500);
       setTimeout(handleInteraction, 1000);
-      
+
       setAudioLoaded(true);
-      
+
       // Auto-play audio on page load
       const autoPlayAudio = async () => {
         if (audioRef.current) {
           try {
             console.log('Attempting to auto-play audio on page load...');
-            
+
             // Wait for audio to be ready
             await new Promise((resolve) => {
               if (audioRef.current!.readyState >= 3) {
@@ -299,17 +299,17 @@ export default function AudioPlayer() {
                 audioRef.current!.addEventListener('canplaythrough', resolve, { once: true });
               }
             });
-            
+
             // Set up audio for autoplay
             audioRef.current.currentTime = 0;
             audioRef.current.volume = volume / 100;
             audioRef.current.muted = false;
-            
+
             // Attempt to play
             await audioRef.current.play();
             setIsPlaying(true);
             console.log('Audio auto-played successfully on page load');
-            
+
           } catch (error) {
             console.log('Auto-play failed, will wait for user interaction:', error);
             // Set up for manual play on user interaction
@@ -317,7 +317,7 @@ export default function AudioPlayer() {
           }
         }
       };
-      
+
       // Try autoplay after a short delay to ensure everything is loaded
       setTimeout(autoPlayAudio, 1000);
     }
@@ -382,7 +382,7 @@ export default function AudioPlayer() {
   useEffect(() => {
     // Add initial agent messages when audio processing begins
     if (demoTime >= 1 && agentMessages.length === 0) {
-      addAgentMessage('Audio Processing AI', 'Initializing A220 maintenance log analysis...', 'analysis');
+      addAgentMessage('Audio Processing AI', 'Initializing 737 maintenance log analysis...', 'analysis');
       setTimeout(() => addAgentMessage('Voice Recognition AI', 'Processing technician communication from hangar floor', 'detection'), 2000);
       setTimeout(() => addAgentMessage('Procedure Protocol AI', 'Analyzing landing gear strut inspection timestamps', 'analysis'), 4000);
       setTimeout(() => addAgentMessage('Speech Analysis AI', 'Detecting critical maintenance alerts in technician audio', 'analysis'), 6000);
@@ -392,36 +392,36 @@ export default function AudioPlayer() {
     if (isEventTriggered('audio-start') && !audioStartTriggered) {
       console.log('Demo: Audio start triggered at 1 second');
       setAudioStartTriggered(true);
-      addAgentMessage('Audio Analysis AI', 'Beginning A220 maintenance log analysis', 'analysis');
+      addAgentMessage('Audio Analysis AI', 'Beginning 737 maintenance log analysis', 'analysis');
       if (audioRef.current) {
         console.log('Attempting to play audio...', {
           readyState: audioRef.current.readyState,
           src: audioRef.current.src,
           paused: audioRef.current.paused
         });
-        
+
         // Set the visual state immediately to show playing
         setIsPlaying(true);
-        
+
         // Reset audio position
         audioRef.current.currentTime = 0;
         audioRef.current.volume = volume / 100;
-        
+
         // Enhanced audio playback with deployment-specific strategies
         const attemptPlay = async () => {
           try {
             const audio = audioRef.current!;
-            
+
             // Comprehensive pre-play setup for deployment
             audio.currentTime = 0;
             audio.volume = volume / 100;
             audio.muted = false;
-            
+
             console.log('Attempting deployment audio play with enhanced unlock');
-            
+
             // Multi-strategy deployment autoplay approach
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-            
+
             // Strategy 1: Force resume context multiple times
             for (let i = 0; i < 3; i++) {
               if (audioContext.state === 'suspended') {
@@ -429,7 +429,7 @@ export default function AudioPlayer() {
                 await new Promise(resolve => setTimeout(resolve, 50));
               }
             }
-            
+
             // Strategy 2: Create multiple silent buffers for unlock
             for (let i = 0; i < 10; i++) {
               const buffer = audioContext.createBuffer(1, 1, 22050);
@@ -438,11 +438,11 @@ export default function AudioPlayer() {
               source.connect(audioContext.destination);
               source.start();
             }
-            
+
             // Strategy 3: Pre-load and pre-play silently
             audio.muted = true;
             audio.volume = 0;
-            
+
             try {
               await audio.play();
               audio.pause();
@@ -450,12 +450,12 @@ export default function AudioPlayer() {
             } catch (e) {
               console.log('Silent pre-play failed, continuing with normal play');
             }
-            
+
             // Strategy 4: Restore settings and attempt real play
             audio.muted = false;
             audio.volume = volume / 100;
             audio.currentTime = 0;
-            
+
             // Ensure audio is fully loaded
             if (audio.readyState < 3) {
               console.log('Waiting for audio to load...');
@@ -468,11 +468,11 @@ export default function AudioPlayer() {
                 audio.load();
               });
             }
-            
+
             // Final play attempt with retry
             let playAttempts = 0;
             const maxAttempts = 5;
-            
+
             while (playAttempts < maxAttempts) {
               try {
                 const playPromise = audio.play();
@@ -482,10 +482,10 @@ export default function AudioPlayer() {
               } catch (playError) {
                 playAttempts++;
                 console.log(`Play attempt ${playAttempts} failed:`, playError);
-                
+
                 if (playAttempts < maxAttempts) {
                   await new Promise(resolve => setTimeout(resolve, 200));
-                  
+
                   // Re-unlock context between attempts
                   if (audioContext.state === 'suspended') {
                     await audioContext.resume();
@@ -493,21 +493,21 @@ export default function AudioPlayer() {
                 }
               }
             }
-            
+
             throw new Error('All play attempts failed');
-            
+
           } catch (error) {
             console.log('All audio playback strategies failed - implementing enhanced visual fallback:', error);
-            
+
             // Enhanced visual fallback that mimics real audio behavior
             setIsPlaying(true);
             setWaveformAnimating(true);
-            
+
             // Create more realistic audio simulation
             let simulatedTime = 0;
             const audioDuration = 30; // Approximate duration
             const updateInterval = 100;
-            
+
             const simulateProgress = () => {
               if (simulatedTime < audioDuration && isPlaying) {
                 setCurrentTime(simulatedTime);
@@ -519,26 +519,26 @@ export default function AudioPlayer() {
                 setCurrentTime(0);
               }
             };
-            
+
             // Add user message about audio playback
             addAgentMessage('System Notice', 'Audio playback restricted by browser - visual analysis continues', 'analysis');
-            
+
             simulateProgress();
             return false;
           }
         };
-        
+
         attemptPlay();
       } else {
         console.log('Audio ref is not available');
       }
     }
-    
+
     if (isEventTriggered('waveform-animate') && !waveformAnimateTriggered) {
       console.log('Demo: Waveform animation triggered at 54 seconds');
       setWaveformAnimateTriggered(true);
       setWaveformAnimating(true);
-      addAgentMessage('Audio Visualization AI', 'Generating waveform patterns for A220 maintenance log analysis', 'analysis');
+      addAgentMessage('Audio Visualization AI', 'Generating waveform patterns for 737 maintenance log analysis', 'analysis');
     }
 
     if (isEventTriggered('audio-insight') && !insightTriggered) {
@@ -546,7 +546,7 @@ export default function AudioPlayer() {
       setInsightTriggered(true);
       setShowInsight(true);
       addAgentMessage('Mechanical Analysis AI', 'Critical alert: Landing gear strut shows excessive vibration - immediate inspection required', 'detection');
-      
+
       // Auto-dismiss after 5 seconds
       setTimeout(() => {
         setShowInsight(false);
@@ -557,7 +557,7 @@ export default function AudioPlayer() {
       console.log('Demo: Waveform stop triggered at 71 seconds');
       setWaveformStopTriggered(true);
       setWaveformAnimating(false);
-      addAgentMessage('Analysis Complete AI', 'A220 maintenance log analysis complete - strut failure confirmed', 'recommendation');
+      addAgentMessage('Analysis Complete AI', '737 maintenance log analysis complete - strut failure confirmed', 'recommendation');
     }
   }, [isEventTriggered, audioStartTriggered, waveformAnimateTriggered, insightTriggered, waveformStopTriggered]);
 
@@ -643,156 +643,156 @@ export default function AudioPlayer() {
             onEnded={() => setIsPlaying(false)}
           />
 
-        {audioLoaded ? (
-          <>
-            {/* Waveform Visualization */}
-            <div className="w-full max-w-md mb-6">
-              <div className="flex items-end justify-center space-x-1 h-16">
-                {waveformBars}
+          {audioLoaded ? (
+            <>
+              {/* Waveform Visualization */}
+              <div className="w-full max-w-md mb-6">
+                <div className="flex items-end justify-center space-x-1 h-16">
+                  {waveformBars}
+                </div>
               </div>
-            </div>
 
-            {/* Track Info */}
-            <div className="text-center mb-6">
-              <h3 className="text-white text-lg font-semibold mb-1">Airbus Maintenance Tech Audio Capture</h3>
-              <p className="text-gray-400 text-sm">Landing Gear Strut Inspection - N2204A</p>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="w-full max-w-md mb-6">
-              <div className="flex items-center justify-between mb-2 text-sm text-gray-400">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
+              {/* Track Info */}
+              <div className="text-center mb-6">
+                <h3 className="text-white text-lg font-semibold mb-1">Boeing Maintenance Tech Audio Capture</h3>
+                <p className="text-gray-400 text-sm">Landing Gear Strut Inspection - N2204A</p>
               </div>
-              <Slider
-                value={[currentTime]}
-                max={duration}
-                step={1}
-                className="[&_[role=slider]]:bg-[#E37DE1] [&_[data-orientation=horizontal]]:bg-[#E37DE1]"
-                onValueChange={handleSeek}
+
+              {/* Progress Bar */}
+              <div className="w-full max-w-md mb-6">
+                <div className="flex items-center justify-between mb-2 text-sm text-gray-400">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+                <Slider
+                  value={[currentTime]}
+                  max={duration}
+                  step={1}
+                  className="[&_[role=slider]]:bg-[#E37DE1] [&_[data-orientation=horizontal]]:bg-[#E37DE1]"
+                  onValueChange={handleSeek}
+                />
+              </div>
+
+              {/* Audio Controls */}
+              <div className="flex items-center justify-center space-x-6">
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                  <SkipBack className="w-5 h-5" />
+                </Button>
+                <Button
+                  onClick={togglePlay}
+                  className="text-white w-12 h-12 rounded-full"
+                  style={{ backgroundColor: '#E37DE1' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C965C8'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#E37DE1'}
+                >
+                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                </Button>
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                  <SkipForward className="w-5 h-5" />
+                </Button>
+              </div>
+
+
+            </>
+          ) : (
+            <>
+              {/* Demo Waveform */}
+              <div className="w-full max-w-md mb-6">
+                <div className="flex items-end justify-center space-x-1 h-16">
+                  {waveformBars}
+                </div>
+              </div>
+
+              {/* Demo Track Info */}
+              <div className="text-center mb-6">
+                <h3 className="text-white text-lg font-semibold mb-1">Boeing Maintenance Tech Audio Capture</h3>
+                <p className="text-gray-400 text-sm">Landing Gear Strut Inspection - N2204A</p>
+              </div>
+
+              {/* Demo Progress Bar */}
+              <div className="w-full max-w-md mb-6">
+                <div className="flex items-center justify-between mb-2 text-sm text-gray-400">
+                  <span>1:23</span>
+                  <span>3:45</span>
+                </div>
+                <div className="bg-gray-600 h-1 rounded-full">
+                  <div className="bg-green-400 h-1 rounded-full w-[37%]"></div>
+                </div>
+              </div>
+
+              {/* Demo Controls */}
+              <div className="flex items-center justify-center space-x-6">
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                  <SkipBack className="w-5 h-5" />
+                </Button>
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full"
+                >
+                  <Play className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                  <SkipForward className="w-5 h-5" />
+                </Button>
+              </div>
+
+              {/* Demo Volume Control */}
+              <div className="flex items-center space-x-2 mt-4">
+                <VolumeX className="w-4 h-4 text-gray-400" />
+                <div className="bg-gray-600 h-1 w-20 rounded-full">
+                  <div className="bg-green-400 h-1 rounded-full w-[70%]"></div>
+                </div>
+                <Volume2 className="w-4 h-4 text-gray-400" />
+              </div>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="audio/*"
+                onChange={handleFileSelect}
+                className="hidden"
               />
-            </div>
+            </>
+          )}
 
-            {/* Audio Controls */}
-            <div className="flex items-center justify-center space-x-6">
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <SkipBack className="w-5 h-5" />
-              </Button>
-              <Button 
-                onClick={togglePlay}
-                className="text-white w-12 h-12 rounded-full"
-                style={{ backgroundColor: '#E37DE1' }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#C965C8'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#E37DE1'}
-              >
-                {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-              </Button>
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <SkipForward className="w-5 h-5" />
-              </Button>
-            </div>
-
-
-          </>
-        ) : (
-          <>
-            {/* Demo Waveform */}
-            <div className="w-full max-w-md mb-6">
-              <div className="flex items-end justify-center space-x-1 h-16">
-                {waveformBars}
-              </div>
-            </div>
-
-            {/* Demo Track Info */}
-            <div className="text-center mb-6">
-              <h3 className="text-white text-lg font-semibold mb-1">Airbus Maintenance Tech Audio Capture</h3>
-              <p className="text-gray-400 text-sm">Landing Gear Strut Inspection - N2204A</p>
-            </div>
-
-            {/* Demo Progress Bar */}
-            <div className="w-full max-w-md mb-6">
-              <div className="flex items-center justify-between mb-2 text-sm text-gray-400">
-                <span>1:23</span>
-                <span>3:45</span>
-              </div>
-              <div className="bg-gray-600 h-1 rounded-full">
-                <div className="bg-green-400 h-1 rounded-full w-[37%]"></div>
-              </div>
-            </div>
-
-            {/* Demo Controls */}
-            <div className="flex items-center justify-center space-x-6">
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <SkipBack className="w-5 h-5" />
-              </Button>
-              <Button 
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full"
-              >
-                <Play className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <SkipForward className="w-5 h-5" />
-              </Button>
-            </div>
-
-            {/* Demo Volume Control */}
-            <div className="flex items-center space-x-2 mt-4">
-              <VolumeX className="w-4 h-4 text-gray-400" />
-              <div className="bg-gray-600 h-1 w-20 rounded-full">
-                <div className="bg-green-400 h-1 rounded-full w-[70%]"></div>
-              </div>
-              <Volume2 className="w-4 h-4 text-gray-400" />
-            </div>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="audio/*"
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-          </>
-        )}
-        
-        {/* Insight Popup - AI Speech Bubble */}
-        {showInsight && (
-          <div className="absolute top-4 left-4 right-4 z-20">
-            <div className="relative">
-              {/* AI Agent Avatar */}
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
-                  <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                
-                {/* Speech Bubble */}
-                <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
-                  {/* Speech bubble tail */}
-                  <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
-                  
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 pr-2">
-                      <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
-                      <p className="text-sm text-white leading-relaxed">
-                        Maintenance technician reports abnormal vibration during A220 strut inspection. Audio analysis confirms critical frequency patterns indicating imminent component failure.
-                      </p>
+          {/* Insight Popup - AI Speech Bubble */}
+          {showInsight && (
+            <div className="absolute top-4 left-4 right-4 z-20">
+              <div className="relative">
+                {/* AI Agent Avatar */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowInsight(false)}
-                      className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
+                  </div>
+
+                  {/* Speech Bubble */}
+                  <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
+                    {/* Speech bubble tail */}
+                    <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
+
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 pr-2">
+                        <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
+                        <p className="text-sm text-white leading-relaxed">
+                          Maintenance technician reports abnormal vibration during 737 strut inspection. Audio analysis confirms critical frequency patterns indicating imminent component failure.
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowInsight(false)}
+                        className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
 
         {/* Agent Log Section - 20% */}

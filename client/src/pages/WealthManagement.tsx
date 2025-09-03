@@ -2,10 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { 
-  FileText, 
-  Search, 
-  TrendingUp, 
+import {
+  FileText,
+  Search,
+  TrendingUp,
   Upload,
   Eye,
   Download,
@@ -116,9 +116,9 @@ export default function PredictiveMaintenance() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedTimeRange, setSelectedTimeRange] = useState("24h");
   const [showAnomalyDetails, setShowAnomalyDetails] = useState(false);
-  
+
   const [queryResult, setQueryResult] = useState<{
-    result: string; 
+    result: string;
     data: string[];
     sources: Array<{
       type: string;
@@ -132,8 +132,8 @@ export default function PredictiveMaintenance() {
   // Aircraft fleet data
   const aircraftFleet = [
     {
-      id: "A350-1000-001",
-      type: "A350-1000",
+      id: "787-10-001",
+      type: "787-10",
       registration: "F-WZNW",
       status: "operational",
       lastMaintenance: "2024-12-10",
@@ -144,8 +144,8 @@ export default function PredictiveMaintenance() {
       location: "Toulouse, France"
     },
     {
-      id: "A320neo-002", 
-      type: "A320neo",
+      id: "737-MAX-8-002",
+      type: "737 MAX 8",
       registration: "F-WZNE",
       status: "maintenance",
       lastMaintenance: "2024-12-08",
@@ -156,8 +156,8 @@ export default function PredictiveMaintenance() {
       location: "Hamburg, Germany"
     },
     {
-      id: "A380-003",
-      type: "A380",
+      id: "747-8F-003",
+      type: "747-8F",
       registration: "F-WWOW",
       status: "operational",
       lastMaintenance: "2024-11-25",
@@ -171,7 +171,7 @@ export default function PredictiveMaintenance() {
 
   // Engine health monitoring data
   const engineHealthData: { [key: string]: AircraftEngineHealth } = {
-    "A350-1000-001": {
+    "787-10-001": {
       engine1: {
         vibration: { current: 0.8, threshold: 1.2, trend: "stable" },
         egt: { current: 650, threshold: 750, trend: "stable" },
@@ -193,7 +193,7 @@ export default function PredictiveMaintenance() {
 
   // Structural health monitoring data
   const structuralHealthData: { [key: string]: AircraftStructuralHealth } = {
-    "A350-1000-001": {
+    "787-10-001": {
       wingStress: { current: 0.65, threshold: 0.8, trend: "stable" },
       fuselageStress: { current: 0.45, threshold: 0.7, trend: "stable" },
       crackPropagation: { current: 0.02, threshold: 0.1, trend: "stable" },
@@ -203,7 +203,7 @@ export default function PredictiveMaintenance() {
 
   // Flight operational data
   const flightOperationalData: { [key: string]: AircraftFlightData } = {
-    "A350-1000-001": {
+    "787-10-001": {
       flightDuration: { avg: 8.5, last: 7.2, trend: "stable" },
       altitude: { avg: 35000, last: 38000, trend: "stable" },
       speed: { avg: 0.85, last: 0.87, trend: "stable" },
@@ -213,7 +213,7 @@ export default function PredictiveMaintenance() {
 
   // Environmental data
   const environmentalData: { [key: string]: EnvironmentalData } = {
-    "A350-1000-001": {
+    "787-10-001": {
       weatherConditions: "Clear",
       humidity: "45%",
       temperature: "22°C",
@@ -226,7 +226,7 @@ export default function PredictiveMaintenance() {
   const maintenanceLogs = [
     {
       id: "ML-001",
-      aircraftId: "A350-1000-001",
+      aircraftId: "787-10-001",
       type: "Preventive",
       description: "Engine oil change and filter replacement",
       date: "2024-12-10",
@@ -237,7 +237,7 @@ export default function PredictiveMaintenance() {
     },
     {
       id: "ML-002",
-      aircraftId: "A320neo-002", 
+      aircraftId: "737-MAX-8-002",
       type: "Corrective",
       description: "Engine vibration analysis and adjustment",
       date: "2024-12-08",
@@ -248,7 +248,7 @@ export default function PredictiveMaintenance() {
     },
     {
       id: "ML-003",
-      aircraftId: "A380-003",
+      aircraftId: "747-8F-003",
       type: "Inspection",
       description: "Structural integrity check",
       date: "2024-11-25",
@@ -263,7 +263,7 @@ export default function PredictiveMaintenance() {
   const anomalyData = [
     {
       id: "ANOM-001",
-      aircraftId: "A350-1000-001",
+      aircraftId: "787-10-001",
       component: "Engine 2",
       metric: "Vibration",
       severity: "medium",
@@ -276,7 +276,7 @@ export default function PredictiveMaintenance() {
     },
     {
       id: "ANOM-002",
-      aircraftId: "A320neo-002",
+      aircraftId: "737-MAX-8-002",
       component: "Engine 1",
       metric: "EGT",
       severity: "high",
@@ -291,7 +291,7 @@ export default function PredictiveMaintenance() {
 
   // Predictive analytics
   const predictiveAnalytics: { [key: string]: PredictiveData } = {
-    "A350-1000-001": {
+    "787-10-001": {
       engineFailureProbability: { "7d": 0.02, "30d": 0.08, "90d": 0.15 },
       structuralFailureProbability: { "7d": 0.01, "30d": 0.03, "90d": 0.07 },
       recommendedMaintenance: "2025-01-15",
@@ -306,10 +306,10 @@ export default function PredictiveMaintenance() {
 
   const handleQuerySubmit = async () => {
     if (!searchQuery.trim()) return;
-    
+
     setIsProcessing(true);
     setQueryResult(null);
-    
+
     // Simulate API call
     setTimeout(() => {
       setQueryResult({
@@ -362,9 +362,16 @@ export default function PredictiveMaintenance() {
     <div className="space-y-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Predictive Maintenance</h2>
-          <p className="text-muted-foreground">AI-powered aircraft health monitoring and failure prediction</p>
+        <div className="flex items-center">
+          <img
+            src="/media/Boeing_logo.png"
+            alt="Boeing"
+            className="h-10 w-auto mr-6"
+          />
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Boeing Predictive Maintenance</h2>
+            <p className="text-muted-foreground">AI-powered aircraft health monitoring and failure prediction</p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" className="flex items-center gap-2">
@@ -392,7 +399,7 @@ export default function PredictiveMaintenance() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-white border-border">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -405,7 +412,7 @@ export default function PredictiveMaintenance() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-white border-border">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -418,7 +425,7 @@ export default function PredictiveMaintenance() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-white border-border">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -447,7 +454,7 @@ export default function PredictiveMaintenance() {
         <CardContent className="p-6">
           <div className="flex gap-2 mb-4">
             <Input
-              placeholder="e.g., Show engine health trends for A350-1000-001, Predict maintenance needs for next 30 days..."
+              placeholder="e.g., Show engine health trends for 787-10-001, Predict maintenance needs for next 30 days..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1"
@@ -493,7 +500,7 @@ export default function PredictiveMaintenance() {
             <div className="space-y-4">
               {aircraftFleet.map((aircraft) => (
                 <div key={aircraft.id} className="border border-border rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
-                     onClick={() => setSelectedAircraft(aircraft.id)}>
+                  onClick={() => setSelectedAircraft(aircraft.id)}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className="font-medium text-foreground">{aircraft.type}</h4>

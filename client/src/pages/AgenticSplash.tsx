@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  Bot, 
-  Plane, 
-  Activity, 
-  Shield, 
+import {
+  Bot,
+  Plane,
+  Activity,
+  Shield,
   Zap,
   CheckCircle,
   ArrowRight
@@ -84,9 +84,9 @@ export default function AgenticSplash() {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
-            <img 
-              src={logoPath} 
-              alt="Invisible Logo" 
+            <img
+              src={logoPath}
+              alt="Invisible Logo"
               className="h-12 w-auto"
             />
           </div>
@@ -106,55 +106,50 @@ export default function AgenticSplash() {
                 const IconComponent = step.icon;
                 const isActive = index === currentStep;
                 const isCompleted = index < currentStep;
-                
+
                 return (
-                  <div 
+                  <div
                     key={index}
-                    className={`flex items-center gap-4 p-4 rounded-lg transition-all duration-500 ${
-                      isActive 
-                        ? 'bg-blue-50 border-2 border-blue-200' 
-                        : isCompleted 
-                          ? 'bg-green-50 border-2 border-green-200'
-                          : 'bg-gray-50 border-2 border-gray-200'
-                    }`}
+                    className={`flex items-center gap-4 p-4 rounded-lg transition-all duration-500 ${isActive
+                      ? 'bg-blue-50 border-2 border-blue-200'
+                      : isCompleted
+                        ? 'bg-green-50 border-2 border-green-200'
+                        : 'bg-gray-50 border-2 border-gray-200'
+                      }`}
                   >
-                    <div className={`flex items-center justify-center w-12 h-12 rounded-full ${
-                      isActive 
-                        ? 'bg-blue-100' 
-                        : isCompleted 
-                          ? 'bg-green-100'
-                          : 'bg-gray-100'
-                    }`}>
-                      <IconComponent className={`h-6 w-6 ${
-                        isActive 
-                          ? 'text-blue-600' 
-                          : isCompleted 
-                            ? 'text-green-600'
-                            : 'text-gray-400'
-                      }`} />
-                    </div>
-                    
-                    <div className="flex-1">
-                      <h3 className={`font-semibold text-lg ${
-                        isActive 
-                          ? 'text-blue-900' 
-                          : isCompleted 
-                            ? 'text-green-900'
-                            : 'text-gray-500'
+                    <div className={`flex items-center justify-center w-12 h-12 rounded-full ${isActive
+                      ? 'bg-blue-100'
+                      : isCompleted
+                        ? 'bg-green-100'
+                        : 'bg-gray-100'
                       }`}>
+                      <IconComponent className={`h-6 w-6 ${isActive
+                        ? 'text-blue-600'
+                        : isCompleted
+                          ? 'text-green-600'
+                          : 'text-gray-400'
+                        }`} />
+                    </div>
+
+                    <div className="flex-1">
+                      <h3 className={`font-semibold text-lg ${isActive
+                        ? 'text-blue-900'
+                        : isCompleted
+                          ? 'text-green-900'
+                          : 'text-gray-500'
+                        }`}>
                         {step.title}
                       </h3>
-                      <p className={`text-sm ${
-                        isActive 
-                          ? 'text-blue-700' 
-                          : isCompleted 
-                            ? 'text-green-700'
-                            : 'text-gray-400'
-                      }`}>
+                      <p className={`text-sm ${isActive
+                        ? 'text-blue-700'
+                        : isCompleted
+                          ? 'text-green-700'
+                          : 'text-gray-400'
+                        }`}>
                         {step.description}
                       </p>
                     </div>
-                    
+
                     {isCompleted && (
                       <CheckCircle className="h-6 w-6 text-green-600" />
                     )}
@@ -185,7 +180,7 @@ export default function AgenticSplash() {
               </>
             )}
           </Button>
-          
+
           <Button
             onClick={handleSkipToQueue}
             variant="outline"
@@ -200,7 +195,7 @@ export default function AgenticSplash() {
           <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
             <div className="flex items-center gap-2">
               <Plane className="h-4 w-4" />
-              <span>Airbus A220 Maintenance</span>
+              <span>Boeing 737 Maintenance</span>
             </div>
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4" />

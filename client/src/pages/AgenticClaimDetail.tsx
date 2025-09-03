@@ -3,15 +3,15 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  ArrowLeft, 
-  Plane, 
-  MapPin, 
-  Calendar, 
-  Camera, 
-  FileText, 
-  Users, 
-  AlertTriangle, 
+import {
+  ArrowLeft,
+  Plane,
+  MapPin,
+  Calendar,
+  Camera,
+  FileText,
+  Users,
+  AlertTriangle,
   Shield,
   Bot,
   Settings,
@@ -74,16 +74,16 @@ interface MaintenanceAlertDetail {
 }
 
 const mockAlertDetail: MaintenanceAlertDetail = {
-  id: "AIR-A320-4512",
-  aircraftId: "A220-300",
-  aircraftType: "Airbus A220-300",
+  id: "AIR-737-4512",
+  aircraftId: "737-700",
+  aircraftType: "Boeing 737-700",
   priority: "critical",
   detectionDate: "2025-01-15",
   detectionTime: "14:30",
   location: "CDG Airport, Paris",
   aircraftDetails: {
-    manufacturer: "Airbus",
-    model: "A220-300",
+    manufacturer: "Boeing",
+    model: "737-700",
     year: "2022",
     serialNumber: "MSN-55123",
     totalFlightHours: 2847,
@@ -169,9 +169,9 @@ export default function AgenticClaimDetail() {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Queue
               </Button>
-              <img 
-                src={logoPath} 
-                alt="Invisible Logo" 
+              <img
+                src={logoPath}
+                alt="Invisible Logo"
                 className="h-8 w-auto"
               />
               <div className="ml-6">
@@ -179,12 +179,12 @@ export default function AgenticClaimDetail() {
                 <p className="text-sm text-gray-500">Aircraft: {alertDetail.aircraftId}</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <Badge className={getPriorityColor(alertDetail.priority)}>
                 {alertDetail.priority.charAt(0).toUpperCase() + alertDetail.priority.slice(1)} Priority
               </Badge>
-              <Button 
+              <Button
                 onClick={handleMobilizeAgents}
                 className="bg-blue-600 hover:bg-blue-700"
               >
@@ -305,7 +305,7 @@ export default function AgenticClaimDetail() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
+                <Button
                   onClick={handleMobilizeAgents}
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
@@ -337,20 +337,20 @@ export default function AgenticClaimDetail() {
                     <Label className="text-sm font-medium text-gray-500">Confidence Score</Label>
                     <div className="flex items-center gap-2">
                       <div className="flex-1 bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-green-500 h-2 rounded-full" 
+                        <div
+                          className="bg-green-500 h-2 rounded-full"
                           style={{ width: `${alertDetail.predictiveAnalysis.confidenceScore}%` }}
                         ></div>
                       </div>
                       <span className="text-sm font-semibold">{alertDetail.predictiveAnalysis.confidenceScore}%</span>
                     </div>
                   </div>
-                  
+
                   <div>
                     <Label className="text-sm font-medium text-gray-500">Predicted Failure Time</Label>
                     <p className="font-semibold text-red-600">{alertDetail.predictiveAnalysis.predictedFailureTime}</p>
                   </div>
-                  
+
                   <div>
                     <Label className="text-sm font-medium text-gray-500">Risk Factors</Label>
                     <ul className="mt-2 space-y-1">

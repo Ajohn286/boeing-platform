@@ -39,7 +39,7 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  
+
   const { currentTime, isEventTriggered } = useDemoTimer();
 
   // Add agent message function
@@ -51,9 +51,9 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
       timestamp: new Date().toLocaleTimeString(),
       type
     };
-    
+
     setAgentMessages(prev => [...prev, newMessage]);
-    
+
     // Auto-scroll to bottom with smooth behavior
     setTimeout(() => {
       if (agentLogRef.current) {
@@ -78,9 +78,9 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
   // Add initial agent messages when browser processing begins
   useEffect(() => {
     if (currentTime >= 1 && agentMessages.length === 0) {
-      addAgentMessage('Regulatory Search AI', 'Searching FAA Part 145 maintenance regulations for A220 compliance...', 'analysis');
+      addAgentMessage('Regulatory Search AI', 'Searching FAA Part 145 maintenance regulations for 737 compliance...', 'analysis');
       setTimeout(() => addAgentMessage('Aviation Standards AI', 'Accessing FAA Advisory Circular AC 43-13-1B maintenance standards', 'analysis'), 2000);
-      setTimeout(() => addAgentMessage('Certification AI', 'Reviewing EASA Type Certificate A.110 for A220 maintenance requirements', 'detection'), 4000);
+      setTimeout(() => addAgentMessage('Certification AI', 'Reviewing EASA Type Certificate A.110 for 737 maintenance requirements', 'detection'), 4000);
       setTimeout(() => addAgentMessage('Compliance Monitor AI', 'Cross-referencing 14 CFR 25.729 landing gear airworthiness standards', 'analysis'), 6000);
       setTimeout(() => addAgentMessage('Regulatory Database AI', 'Accessing Transport Canada maintenance directive database', 'analysis'), 8000);
     }
@@ -91,7 +91,7 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
     if (isEventTriggered('second-video-start') && videoRef.current && !shouldPlayVideo) {
       console.log('Demo: Second video triggered at 10 seconds - signaling Web Browser');
       setShouldPlayVideo(true);
-      
+
       // Try to play the video immediately
       if (videoRef.current) {
         videoRef.current.currentTime = 0; // Start from beginning
@@ -109,7 +109,7 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
           document.addEventListener('click', tryPlayAfterInteraction);
         });
       }
-      
+
       addAgentMessage('Regulatory Validation AI', 'Accessing FAA maintenance regulation database for compliance verification', 'analysis');
     }
   }, [isEventTriggered, shouldPlayVideo]);
@@ -119,13 +119,13 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
     if (isEventTriggered('first-insight') && !insightTriggered) {
       console.log('Demo: First insight triggered at 16 seconds');
       setInsightTriggered(true);
-      addAgentMessage('Regulatory Search AI', 'Found FAA AD 2025-12-04 applicable to A220 landing gear systems', 'detection');
-      
+      addAgentMessage('Regulatory Search AI', 'Found FAA AD 2025-12-04 applicable to 737 landing gear systems', 'detection');
+
       // Add regulatory documentation access message
       setTimeout(() => {
         addAgentMessage('Compliance Extraction AI', 'Extracting mandatory compliance actions from airworthiness directive', 'analysis');
       }, 2000);
-      
+
       setTimeout(() => {
         addAgentMessage('Regulatory Validation AI', 'Confirmed: Immediate grounding required per 14 CFR 39.3', 'recommendation');
       }, 4000);
@@ -145,7 +145,7 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
   useEffect(() => {
     if (showVideo && videoRef.current) {
       const video = videoRef.current;
-      
+
       // Set up event listener to start at the beginning
       const handleLoadedData = () => {
         video.currentTime = 0; // Start at the beginning
@@ -161,10 +161,10 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
           setInsightTriggered(false); // Reset insight trigger for replay
         }
       };
-      
+
       video.addEventListener('loadeddata', handleLoadedData);
       video.addEventListener('play', handlePlay);
-      
+
       // Cleanup
       return () => {
         video.removeEventListener('loadeddata', handleLoadedData);
@@ -179,8 +179,8 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
       console.log('Demo: Second insight triggered at 10 seconds from app start');
       setShowInsight(true);
       setSecondInsightTriggered(true);
-      addAgentMessage('Regulatory Compliance AI', 'FAA AD 2025-12-04 requires immediate A220 landing gear inspection per 14 CFR 39.3', 'detection');
-      
+      addAgentMessage('Regulatory Compliance AI', 'FAA AD 2025-12-04 requires immediate 737 landing gear inspection per 14 CFR 39.3', 'detection');
+
       // Auto-dismiss after 5 seconds
       setTimeout(() => {
         setShowInsight(false);
@@ -237,17 +237,17 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
                             <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
                           </div>
                         </div>
-                        
+
                         {/* Speech Bubble */}
                         <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
                           {/* Speech bubble tail */}
                           <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
-                          
+
                           <div className="flex items-start justify-between">
                             <div className="flex-1 pr-2">
                               <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
                               <p className="text-sm text-white leading-relaxed">
-                                FAA Airworthiness Directive 2025-12-04 mandates immediate inspection of A220 landing gear struts. Compliance required within 24 hours per 14 CFR 39.3.
+                                FAA Airworthiness Directive 2025-12-04 mandates immediate inspection of 737 landing gear struts. Compliance required within 24 hours per 14 CFR 39.3.
                               </p>
                             </div>
                             <Button
@@ -272,7 +272,7 @@ export default function WebBrowser({ shouldStartVideo = false }: WebBrowserProps
                 </div>
                 <p className="text-gray-400 text-lg mb-2">Web Browser</p>
                 <p className="text-gray-500 text-sm mb-6">Ready for video content</p>
-                <Button 
+                <Button
                   onClick={() => fileInputRef.current?.click()}
                   className="bg-purple-500 hover:bg-purple-600 text-white"
                 >

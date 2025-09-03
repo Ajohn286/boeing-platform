@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { 
-  ArrowLeft, 
-  Bot, 
-  Eye, 
-  Shield, 
-  FileText, 
-  Zap, 
+import {
+  ArrowLeft,
+  Bot,
+  Eye,
+  Shield,
+  FileText,
+  Zap,
   Search,
   CheckCircle,
   Users,
@@ -47,7 +47,7 @@ const availableAgents: AIAgent[] = [
   },
   {
     id: "sensor-monitoring",
-    name: "Sensor Monitoring Agent", 
+    name: "Sensor Monitoring Agent",
     specialty: "Real-time Monitoring",
     description: "Continuously monitors aircraft sensor data including vibration, temperature, and acoustic signatures for anomaly detection",
     icon: Activity,
@@ -85,7 +85,7 @@ const availableAgents: AIAgent[] = [
     id: "regulatory-compliance",
     name: "Regulatory Compliance Agent",
     specialty: "Compliance & Standards",
-    description: "Ensures maintenance decisions comply with FAA, EASA, and Airbus maintenance regulations and procedures",
+    description: "Ensures maintenance decisions comply with FAA, EASA, and Boeing maintenance regulations and procedures",
     icon: Shield,
     recommended: false,
     capabilities: ["Regulatory Compliance", "Documentation Review", "Standards Verification"]
@@ -114,7 +114,7 @@ export default function AgenticAgentMobilization() {
   const [, setLocation] = useLocation();
   const [selectedAgents, setSelectedAgents] = useState<string[]>([
     "predictive-analysis",
-    "sensor-monitoring", 
+    "sensor-monitoring",
     "maintenance-scheduler",
     "component-diagnostics",
     "risk-assessment"
@@ -122,8 +122,8 @@ export default function AgenticAgentMobilization() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleAgentToggle = (agentId: string) => {
-    setSelectedAgents(prev => 
-      prev.includes(agentId) 
+    setSelectedAgents(prev =>
+      prev.includes(agentId)
         ? prev.filter(id => id !== agentId)
         : [...prev, agentId]
     );
@@ -134,7 +134,7 @@ export default function AgenticAgentMobilization() {
   };
 
   const handleBackToDetail = () => {
-    setLocation("/agentic-claim-detail/AIR-A320-4512");
+    setLocation("/agentic-claim-detail/AIR-737-4512");
   };
 
   const filteredAgents = availableAgents.filter(agent =>
@@ -143,7 +143,7 @@ export default function AgenticAgentMobilization() {
     agent.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const selectedAgentDetails = availableAgents.filter(agent => 
+  const selectedAgentDetails = availableAgents.filter(agent =>
     selectedAgents.includes(agent.id)
   );
 
@@ -163,9 +163,9 @@ export default function AgenticAgentMobilization() {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Alert
               </Button>
-              <img 
-                src={logoPath} 
-                alt="Invisible Logo" 
+              <img
+                src={logoPath}
+                alt="Invisible Logo"
                 className="h-8 w-auto"
               />
               <div className="ml-6">
@@ -173,7 +173,7 @@ export default function AgenticAgentMobilization() {
                 <p className="text-sm text-gray-500">Select AI agents for maintenance analysis</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-sm text-gray-500">
                 <Users className="h-4 w-4" />
@@ -208,20 +208,19 @@ export default function AgenticAgentMobilization() {
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <div className="space-y-4">
                   {filteredAgents.map((agent) => {
                     const IconComponent = agent.icon;
                     const isSelected = selectedAgents.includes(agent.id);
-                    
+
                     return (
-                      <Card 
-                        key={agent.id} 
-                        className={`cursor-pointer transition-all duration-200 ${
-                          isSelected 
-                            ? 'ring-2 ring-blue-500 bg-blue-50' 
-                            : 'hover:shadow-md'
-                        }`}
+                      <Card
+                        key={agent.id}
+                        className={`cursor-pointer transition-all duration-200 ${isSelected
+                          ? 'ring-2 ring-blue-500 bg-blue-50'
+                          : 'hover:shadow-md'
+                          }`}
                         onClick={() => handleAgentToggle(agent.id)}
                       >
                         <CardContent className="p-4">
@@ -229,7 +228,7 @@ export default function AgenticAgentMobilization() {
                             <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg flex-shrink-0">
                               <IconComponent className="h-6 w-6 text-blue-600" />
                             </div>
-                            
+
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
@@ -243,21 +242,21 @@ export default function AgenticAgentMobilization() {
                                   </h3>
                                   <p className="text-sm font-medium text-blue-600">{agent.specialty}</p>
                                 </div>
-                                
-                                <Checkbox 
+
+                                <Checkbox
                                   checked={isSelected}
                                   onChange={() => handleAgentToggle(agent.id)}
                                   className="ml-4"
                                 />
                               </div>
-                              
+
                               <p className="text-sm text-gray-600 mb-3">{agent.description}</p>
-                              
+
                               <div className="flex flex-wrap gap-1">
                                 {agent.capabilities.map((capability, index) => (
-                                  <Badge 
-                                    key={index} 
-                                    variant="outline" 
+                                  <Badge
+                                    key={index}
+                                    variant="outline"
                                     className="text-xs bg-gray-50"
                                   >
                                     {capability}
@@ -349,8 +348,8 @@ export default function AgenticAgentMobilization() {
                 <p className="text-sm text-gray-600 mb-4">
                   You are mobilizing {selectedAgents.length} AI agents to analyze the maintenance alert and provide comprehensive recommendations.
                 </p>
-                
-                <Button 
+
+                <Button
                   onClick={handleLaunchTeam}
                   disabled={selectedAgents.length === 0}
                   className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300"
@@ -358,7 +357,7 @@ export default function AgenticAgentMobilization() {
                   <Bot className="h-4 w-4 mr-2" />
                   Launch Processing Team
                 </Button>
-                
+
                 {selectedAgents.length === 0 && (
                   <p className="text-xs text-gray-500 mt-2 text-center">
                     Select at least one agent to continue

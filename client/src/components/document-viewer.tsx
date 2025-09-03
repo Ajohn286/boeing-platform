@@ -19,11 +19,11 @@ export default function DocumentViewer() {
   const [isAutoFlipping, setIsAutoFlipping] = useState(false);
   const [showFinalInsight, setShowFinalInsight] = useState(false);
   const [finalInsightTriggered, setFinalInsightTriggered] = useState(false);
-  
+
   // Agent log state
   const [agentMessages, setAgentMessages] = useState<AgentMessage[]>([]);
   const [messageCount, setMessageCount] = useState(0);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const agentLogRef = useRef<HTMLDivElement>(null);
   const { currentTime: demoTime, registerEvent, isEventTriggered } = useDemoTimer();
@@ -34,17 +34,17 @@ export default function DocumentViewer() {
       id: `doc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       agentName,
       message,
-      timestamp: new Date().toLocaleTimeString('en-US', { 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
+      timestamp: new Date().toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
       }),
       type
     };
     setAgentMessages(prev => [...prev, newMessage]);
     setMessageCount(prev => prev + 1);
-    
+
     // Auto-scroll to bottom with smooth behavior
     setTimeout(() => {
       if (agentLogRef.current) {
@@ -65,10 +65,10 @@ export default function DocumentViewer() {
   // Add initial agent messages when document processing begins
   useEffect(() => {
     if (demoTime >= 1 && agentMessages.length === 0) {
-      addAgentMessage('Document Processing AI', 'Starting A220 maintenance manual analysis...', 'analysis');
+      addAgentMessage('Document Processing AI', 'Starting 737 maintenance manual analysis...', 'analysis');
       setTimeout(() => addAgentMessage('OCR Analysis AI', 'Extracting technical specifications and procedures', 'analysis'), 2000);
       setTimeout(() => addAgentMessage('Technical Document AI', 'Analyzing landing gear strut replacement protocols', 'analysis'), 4000);
-      setTimeout(() => addAgentMessage('Compliance AI', 'Verifying Airbus maintenance standards compliance', 'analysis'), 6000);
+      setTimeout(() => addAgentMessage('Compliance AI', 'Verifying Boeing maintenance standards compliance', 'analysis'), 6000);
       setTimeout(() => addAgentMessage('Safety Protocol AI', 'Checking regulatory compliance and safety procedures', 'analysis'), 8000);
     }
   }, [demoTime, agentMessages.length]);
@@ -80,7 +80,7 @@ export default function DocumentViewer() {
       setShowFinalInsight(true);
       setFinalInsightTriggered(true);
       addAgentMessage('Technical Assessment AI', 'Identified critical component failure indicators', 'detection');
-      
+
       // Auto-dismiss after 5 seconds
       setTimeout(() => {
         setShowFinalInsight(false);
@@ -93,28 +93,28 @@ export default function DocumentViewer() {
     const handlePageFlip = () => {
       console.log('Document Viewer: Starting automatic page flip with scrolling');
       setIsAutoFlipping(true);
-      
+
       // Start from page 1, then flip through all pages
       setCurrentPage(1);
-      
+
       let currentPageIndex = 1;
-      
+
       const performPageSequence = () => {
         if (currentPageIndex > totalPages) {
           setIsAutoFlipping(false);
           console.log('Document Viewer: Page flip sequence completed');
           return;
         }
-        
+
         console.log(`Document Viewer: Starting page ${currentPageIndex} sequence`);
         setCurrentPage(currentPageIndex);
-        
+
         // Scroll through the current page
         const documentContent = document.querySelector('[data-document-content="true"]');
         if (documentContent) {
           // Scroll to top first
           documentContent.scrollTo({ top: 0, behavior: 'smooth' });
-          
+
           // Wait a moment, then scroll to bottom
           setTimeout(() => {
             const maxScroll = documentContent.scrollHeight - documentContent.clientHeight;
@@ -122,7 +122,7 @@ export default function DocumentViewer() {
               documentContent.scrollTo({ top: maxScroll, behavior: 'smooth' });
               console.log(`Document Viewer: Scrolling through page ${currentPageIndex}`);
             }
-            
+
             // Wait for scroll to complete, then move to next page
             setTimeout(() => {
               currentPageIndex++;
@@ -137,12 +137,12 @@ export default function DocumentViewer() {
           }, 2500);
         }
       };
-      
+
       performPageSequence();
     };
 
     window.addEventListener('startPageFlip', handlePageFlip);
-    
+
     return () => {
       window.removeEventListener('startPageFlip', handlePageFlip);
     };
@@ -167,10 +167,10 @@ export default function DocumentViewer() {
         return (
           <div className="text-gray-800 text-sm leading-tight space-y-3">
             <div className="border-b pb-2 mb-4">
-              <h3 className="font-bold text-base">AIRBUS A220 MAINTENANCE ALERT</h3>
+              <h3 className="font-bold text-base">AIRBUS 737 MAINTENANCE ALERT</h3>
               <p className="text-xs text-gray-600">SECTION I - AIRCRAFT IDENTIFICATION</p>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
               <div><strong>AIRCRAFT REGISTRATION:</strong> N2204A</div>
               <div><strong>ALERT DATE:</strong> 07/14/2025</div>
@@ -178,15 +178,15 @@ export default function DocumentViewer() {
               <div><strong>AIRCRAFT SERIAL NUMBER:</strong> 55044</div>
               <div><strong>EST. MAINTENANCE COST:</strong> $47,500</div>
               <div><strong>AIRCRAFT YEAR:</strong> 2019</div>
-              <div><strong>MANUFACTURER:</strong> Airbus</div>
-              <div><strong>MODEL:</strong> A220-100</div>
+              <div><strong>MANUFACTURER:</strong> Boeing</div>
+              <div><strong>MODEL:</strong> 737-100</div>
             </div>
 
             <div className="border-t pt-3 mt-4">
               <h4 className="font-bold text-sm mb-2">SECTION II - COMPONENT DETAILS</h4>
               <div className="text-xs space-y-1">
                 <div><strong>COMPONENT NAME:</strong> Main Landing Gear Strut</div>
-                <div><strong>PART NUMBER:</strong> A220-32-1004-001</div>
+                <div><strong>PART NUMBER:</strong> 737-32-1004-001</div>
                 <div><strong>LOCATION:</strong> Left Main Landing Gear Bay</div>
                 <div><strong>COMPONENT STATUS:</strong> Critical failure detected; immediate replacement required</div>
               </div>
@@ -213,14 +213,14 @@ export default function DocumentViewer() {
             </div>
           </div>
         );
-      
+
       case 2:
         return (
           <div className="text-gray-800 text-sm leading-tight space-y-3">
             <div className="border-b pb-2 mb-4">
               <h4 className="font-bold text-sm">SECTION IV - SENSOR DATA AND DETECTION</h4>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
               <div><strong>DETECTION DATE:</strong> 07/14/2025</div>
               <div><strong>DETECTION TIME:</strong> 14:23 UTC</div>
@@ -276,33 +276,33 @@ export default function DocumentViewer() {
             </div>
           </div>
         );
-      
+
       case 3:
         return (
           <div className="text-gray-800 text-sm leading-tight space-y-3">
             <div className="border-b pb-2 mb-4">
               <h4 className="font-bold text-sm">SECTION VII - DETAILED TECHNICAL ANALYSIS</h4>
             </div>
-            
+
             <div className="text-xs space-y-3">
               <p>
-                <strong>FAILURE ANALYSIS:</strong> On July 14, 2025, at 14:23 UTC, the Skywise Predictive Maintenance system detected anomalous vibration patterns in the left main landing gear strut of Airbus A220-100, registration N2204A. The aircraft was parked at Gate A12 at Atlanta Hartsfield-Jackson International Airport following Flight DL1247 from Boston Logan.
+                <strong>FAILURE ANALYSIS:</strong> On July 14, 2025, at 14:23 UTC, the Skywise Predictive Maintenance system detected anomalous vibration patterns in the left main landing gear strut of Boeing 737-100, registration N2204A. The aircraft was parked at Gate A12 at Atlanta Hartsfield-Jackson International Airport following Flight DL1247 from Boston Logan.
               </p>
-              
+
               <p>
                 Sensor data analysis revealed excessive vibration frequencies of 12.4Hz, significantly above the normal operational range of 2-4Hz. Simultaneously, hydraulic pressure readings showed a concerning drop to 1,847 PSI, well below the minimum acceptable threshold of 2,100 PSI. Component temperature monitoring indicated elevated readings of 167°F, suggesting potential internal friction or hydraulic fluid degradation.
               </p>
-              
+
               <p>
-                The AI-powered diagnostic system cross-referenced these parameters with historical failure patterns from the global A220 fleet database. Pattern matching algorithms identified similar pre-failure signatures in 47 previous cases, with 94.7% confidence that catastrophic strut failure would occur within 12-18 operational hours if not addressed immediately.
+                The AI-powered diagnostic system cross-referenced these parameters with historical failure patterns from the global 737 fleet database. Pattern matching algorithms identified similar pre-failure signatures in 47 previous cases, with 94.7% confidence that catastrophic strut failure would occur within 12-18 operational hours if not addressed immediately.
               </p>
-              
+
               <p>
                 Visual inspection protocols were automatically initiated, and maintenance crew confirmed visible stress fractures in the strut housing consistent with advanced metal fatigue. The component has accumulated 1,247 cycles since last major maintenance and shows signs of accelerated wear due to recent operations in high-stress environments.
               </p>
-              
+
               <p>
-                Per Airbus Service Bulletin A220-32-001 and FAA Airworthiness Directive 2025-12-04, immediate grounding is required. The aircraft must not be operated until complete strut replacement is performed according to Aircraft Maintenance Manual procedures AMM 32-31-00 through 32-31-15.
+                Per Boeing Service Bulletin 737-32-001 and FAA Airworthiness Directive 2025-12-04, immediate grounding is required. The aircraft must not be operated until complete strut replacement is performed according to Aircraft Maintenance Manual procedures AMM 32-31-00 through 32-31-15.
               </p>
             </div>
 
@@ -317,7 +317,7 @@ export default function DocumentViewer() {
             <div className="border-t pt-3 mt-4">
               <h4 className="font-bold text-sm mb-2">SECTION IX - REPLACEMENT PART DETAILS</h4>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-                <div><strong>PART NUMBER:</strong> A220-32-1004-001</div>
+                <div><strong>PART NUMBER:</strong> 737-32-1004-001</div>
                 <div><strong>SERIAL NUMBER:</strong> LG-445721-R</div>
                 <div><strong>SUPPLIER:</strong> Safran Landing Systems</div>
                 <div><strong>ESTIMATED DOWNTIME:</strong> 16-24 hours</div>
@@ -329,7 +329,7 @@ export default function DocumentViewer() {
             </div>
           </div>
         );
-      
+
       default:
         return <div className="text-center text-gray-500">Page not found</div>;
     }
@@ -353,79 +353,79 @@ export default function DocumentViewer() {
         <div className="flex-1 relative" style={{ width: '80%' }}>
           {/* Document Content */}
           <div className="h-full flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-lg w-full h-full p-4 overflow-hidden">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-gray-900 text-lg font-bold">Airbus A220 Maintenance Alert</h2>
-            </div>
-            <div 
-              className="w-full h-full bg-gray-50 rounded border overflow-auto p-4 relative"
-              style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top left' }}
-              data-document-content="true"
-            >
-              {renderPageContent()}
+            <div className="bg-white rounded-lg shadow-lg w-full h-full p-4 overflow-hidden">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-gray-900 text-lg font-bold">Boeing 737 Maintenance Alert</h2>
+              </div>
+              <div
+                className="w-full h-full bg-gray-50 rounded border overflow-auto p-4 relative"
+                style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top left' }}
+                data-document-content="true"
+              >
+                {renderPageContent()}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Page Navigation */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-          <div className="bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center space-x-4">
-            <Button variant="ghost" size="sm" onClick={prevPage} className="text-white hover:text-orange-400 p-1">
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <span className="text-white text-sm">Page {currentPage} of {totalPages}</span>
-            <Button variant="ghost" size="sm" onClick={nextPage} className="text-white hover:text-orange-400 p-1">
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+          {/* Page Navigation */}
+          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+            <div className="bg-black/70 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center space-x-4">
+              <Button variant="ghost" size="sm" onClick={prevPage} className="text-white hover:text-orange-400 p-1">
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <span className="text-white text-sm">Page {currentPage} of {totalPages}</span>
+              <Button variant="ghost" size="sm" onClick={nextPage} className="text-white hover:text-orange-400 p-1">
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
-        </div>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".pdf"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
 
-        {/* Final Insight Popup - AI Speech Bubble */}
-        {showFinalInsight && (
-          <div className="absolute top-4 left-4 right-4 z-20">
-            <div className="relative">
-              {/* AI Agent Avatar */}
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
-                  <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-                
-                {/* Speech Bubble */}
-                <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
-                  {/* Speech bubble tail */}
-                  <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
-                  
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 pr-2">
-                      <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
-                      <p className="text-sm text-white leading-relaxed">
-                        Critical landing gear strut failure detected on N2204A. Immediate grounding required - 94.7% confidence of catastrophic failure within 12-18 hours
-                      </p>
+          {/* Final Insight Popup - AI Speech Bubble */}
+          {showFinalInsight && (
+            <div className="absolute top-4 left-4 right-4 z-20">
+              <div className="relative">
+                {/* AI Agent Avatar */}
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-[#274754] rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-4 h-4 bg-white rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-[#274754] rounded-full animate-pulse"></div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowFinalInsight(false)}
-                      className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
+                  </div>
+
+                  {/* Speech Bubble */}
+                  <div className="relative bg-[#274754] rounded-2xl rounded-tl-sm p-4 shadow-lg max-w-md">
+                    {/* Speech bubble tail */}
+                    <div className="absolute left-0 top-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[12px] border-r-[#274754] -translate-x-3"></div>
+
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 pr-2">
+                        <div className="text-xs font-medium text-gray-100 mb-1 opacity-80">AI Agent</div>
+                        <p className="text-sm text-white leading-relaxed">
+                          Critical landing gear strut failure detected on N2204A. Immediate grounding required - 94.7% confidence of catastrophic failure within 12-18 hours
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowFinalInsight(false)}
+                        className="text-gray-200 hover:text-white hover:bg-gray-600 p-1 ml-2"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
 
         {/* Agent Log Section - 20% */}

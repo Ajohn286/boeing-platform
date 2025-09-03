@@ -1,11 +1,11 @@
 /*
 *******************
-# Project        : Airbus Platform LHM
+# Project        : Boeing Platform LHM
 # File           : client/src/pages/SensorDataUI.tsx
 # Version        : v2.6  Last update: 01/17/2025 18:30 EST
 # Status         : Supports: UV | PNP
 # Classification : CUI//SP-CTI
-# Purpose        : Real-time sensor monitoring with Airbus turbofan data
+# Purpose        : Real-time sensor monitoring with Boeing turbofan data
 # Workflow       : MAIN
 # Core Module    : yes
 # App Functionality : [sensor monitoring, anomaly detection, real data visualization]
@@ -13,32 +13,32 @@
 #   * Called by       : App.tsx routing
 #   * Calls           : /data/turbofan-columns.json, /data/turbofan-sample.txt
 #   * Libraries       : React, Lucide Icons, Tailwind CSS
-#   * Infrastructure  : Public data folder, Airbus turbofan dataset
+#   * Infrastructure  : Public data folder, Boeing turbofan dataset
 # Change Log
 #   * v2.6 (01/17/2025): Added real-time sensor trends chart and CSV export functionality
 #   * v2.5 (01/17/2025): Added continuous data cycling and archived inspection video feed
-#   * v2.4 (01/17/2025): Removed NASA references, replaced with Airbus branding
+#   * v2.4 (01/17/2025): Removed NASA references, replaced with Boeing branding
 #   * v2.3 (01/17/2025): Added looping turbofan video feed to right column
 #   * v2.2 (01/17/2025): Updated refresh rate to 1 second for live monitoring
 #   * v2.1 (01/17/2025): Updated to match Invisible platform white theme
-#   * v2.0 (01/15/2025): Updated to use real Airbus turbofan engine sensor data
+#   * v2.0 (01/15/2025): Updated to use real Boeing turbofan engine sensor data
 #   * v1.0 (01/15/2025): Initial creation with SAIC styling and data integration
-# Description     : Aircraft sensor monitoring dashboard using real Airbus turbofan
+# Description     : Aircraft sensor monitoring dashboard using real Boeing turbofan
 #                   engine sensor data with 21 sensors, threshold monitoring, and AI agent integration
 *******************
 */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Activity, 
-  Wifi, 
-  WifiOff, 
-  Play, 
-  MessageSquare, 
-  ChevronRight, 
-  Circle, 
-  Download, 
-  Terminal, 
+import {
+  Activity,
+  Wifi,
+  WifiOff,
+  Play,
+  MessageSquare,
+  ChevronRight,
+  Circle,
+  Download,
+  Terminal,
   AlertTriangle,
   Pause,
   BarChart3
@@ -125,7 +125,7 @@ const SensorDataUI = () => {
   const [currentDataIndex, setCurrentDataIndex] = useState(0);
   const scanInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Load Airbus turbofan dataset configuration
+  // Load Boeing turbofan dataset configuration
   useEffect(() => {
     const loadTurbofanData = async () => {
       try {
@@ -137,7 +137,7 @@ const SensorDataUI = () => {
         // Load sample data
         const dataResponse = await fetch('/data/turbofan-sample.txt');
         const dataText = await dataResponse.text();
-        
+
         // Parse the space-separated data
         const lines = dataText.trim().split('\n');
         const parsedData: TurbofanDataPoint[] = lines.map(line => {
@@ -151,7 +151,7 @@ const SensorDataUI = () => {
             sensors: values.slice(5) // Sensors start at column 6 (index 5)
           };
         });
-        
+
         setTurbofanData(parsedData);
       } catch (error) {
         console.error('Failed to load turbofan data:', error);
@@ -161,7 +161,7 @@ const SensorDataUI = () => {
     loadTurbofanData();
   }, []);
 
-  const generateSensorDataFromAirbus = () => {
+  const generateSensorDataFromBoeing = () => {
     if (turbofanColumns.length === 0 || turbofanData.length === 0) return;
 
     const dataPoint = turbofanData[currentDataIndex % turbofanData.length];
@@ -169,21 +169,21 @@ const SensorDataUI = () => {
 
     const timestamp = new Date();
     const newFlagged = new Set<string>();
-    
-    // Use real sensor data from Airbus dataset
+
+    // Use real sensor data from Boeing dataset
     const sensorColumns = turbofanColumns.filter(col => col.type === 'sensor'); // Filter for sensor type columns
-    
+
     const newData: SensorData[] = sensorColumns.map((column, index) => {
       const sensorValue = dataPoint.sensors[index] || 0;
       const sensorId = `sensor-${column.index}`;
-      
+
       // Check thresholds if available
       let status = 'normal';
       const thresholds = column.thresholds;
       if (thresholds) {
         const exceedsThreshold = sensorValue > thresholds.max || sensorValue < thresholds.min;
         const isCritical = sensorValue > thresholds.critical;
-        
+
         if (isCritical) {
           status = 'critical';
           newFlagged.add(sensorId);
@@ -192,25 +192,25 @@ const SensorDataUI = () => {
           newFlagged.add(sensorId);
         }
 
-                 // Simulate anomaly detection
-         if ((status === 'critical' || Math.random() < 0.05) && !anomalyDetected) {
-           setAnomalyDetected(true);
-           triggerAgenticFlow(column.name, sensorValue, thresholds);
-         }
-       }
+        // Simulate anomaly detection
+        if ((status === 'critical' || Math.random() < 0.05) && !anomalyDetected) {
+          setAnomalyDetected(true);
+          triggerAgenticFlow(column.name, sensorValue, thresholds);
+        }
+      }
 
-       return {
-         id: sensorId,
-         name: column.name,
-         value: sensorValue.toFixed(4),
-         unit: column.unit || '',
-         status,
-         timestamp: timestamp.toISOString(),
-         raw: {
-           sensor_id: `AIRBUS-${column.index}`,
-           type: column.name.toLowerCase().replace(/\s+/g, '_'),
-                     value: sensorValue,
-           unit: column.unit || '',
+      return {
+        id: sensorId,
+        name: column.name,
+        value: sensorValue.toFixed(4),
+        unit: column.unit || '',
+        status,
+        timestamp: timestamp.toISOString(),
+        raw: {
+          sensor_id: `AIRBUS-${column.index}`,
+          type: column.name.toLowerCase().replace(/\s+/g, '_'),
+          value: sensorValue,
+          unit: column.unit || '',
           timestamp: timestamp.getTime(),
           engine_unit: dataPoint.unitNumber,
           cycle: dataPoint.timeCycles,
@@ -221,14 +221,14 @@ const SensorDataUI = () => {
         }
       };
     });
-    
+
     setSensorData(newData);
     setFlaggedSensors(newFlagged);
     setLastUpdate(new Date());
-    
+
     // Keep history for raw data view
     setRawDataHistory(prev => [...prev.slice(-100), ...newData.map(s => s.raw)]);
-    
+
     // Update chart data with key sensors for trending
     const chartEntry = {
       time: timestamp.toLocaleTimeString(),
@@ -239,7 +239,7 @@ const SensorDataUI = () => {
       }, {} as any)
     };
     setChartData(prev => [...prev.slice(-20), chartEntry]); // Keep last 20 data points
-    
+
     // Move to next data point - cycle continuously from beginning when reaching end
     setCurrentDataIndex(prev => {
       const nextIndex = (prev + 1) % turbofanData.length;
@@ -262,27 +262,27 @@ const SensorDataUI = () => {
   // Initialize agent conversation
   const initializeAgentConversation = (sensorName: string, value: number, threshold: SensorThreshold) => {
     const initialMessages: AgentMessage[] = [
-      { 
-        role: 'agent', 
-        content: `Anomaly detected in ${sensorName}: reading ${value.toFixed(4)} exceeds normal operating parameters. Initiating Airbus diagnostic protocol analysis...`, 
-        timestamp: new Date() 
+      {
+        role: 'agent',
+        content: `Anomaly detected in ${sensorName}: reading ${value.toFixed(4)} exceeds normal operating parameters. Initiating Boeing diagnostic protocol analysis...`,
+        timestamp: new Date()
       },
-      { 
-        role: 'agent', 
-        content: 'Cross-referencing with historical turbofan engine degradation patterns from Airbus maintenance database...', 
-        timestamp: new Date() 
+      {
+        role: 'agent',
+        content: 'Cross-referencing with historical turbofan engine degradation patterns from Boeing maintenance database...',
+        timestamp: new Date()
       }
     ];
     setAgentMessages(initialMessages);
-    
+
     // Simulate agent analysis
     setTimeout(() => {
       setAgentMessages(prev => [...prev, {
         role: 'agent',
-        content: 'Analysis complete. Potential HPC degradation pattern identified. This aligns with Airbus fault mode specifications. Launching visual inspection interface...',
+        content: 'Analysis complete. Potential HPC degradation pattern identified. This aligns with Boeing fault mode specifications. Launching visual inspection interface...',
         timestamp: new Date()
       }]);
-      
+
       // Agent launches video
       setTimeout(() => {
         setShowVideo(true);
@@ -305,9 +305,9 @@ const SensorDataUI = () => {
     // Create CSV headers
     const headers = Object.keys(rawDataHistory[0]);
     const csvHeaders = headers.join(',');
-    
+
     // Create CSV rows
-    const csvRows = rawDataHistory.map(row => 
+    const csvRows = rawDataHistory.map(row =>
       headers.map(header => {
         const value = row[header];
         // Handle nested objects and arrays
@@ -321,12 +321,12 @@ const SensorDataUI = () => {
         return value;
       }).join(',')
     );
-    
+
     const csvContent = [csvHeaders, ...csvRows].join('\n');
     const dataUri = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csvContent);
-    
-    const exportFileDefaultName = `airbus_turbofan_data_${new Date().toISOString().split('T')[0]}.csv`;
-    
+
+    const exportFileDefaultName = `boeing_turbofan_data_${new Date().toISOString().split('T')[0]}.csv`;
+
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
@@ -336,12 +336,12 @@ const SensorDataUI = () => {
   useEffect(() => {
     // Simulate connection establishment
     setTimeout(() => setConnectionStatus('connected'), 1000);
-    
-    // Start sensor data simulation using Airbus data
+
+    // Start sensor data simulation using Boeing data
     if (isScanning && connectionStatus === 'connected' && turbofanColumns.length > 0 && turbofanData.length > 0) {
-      scanInterval.current = setInterval(generateSensorDataFromAirbus, 1000); // Update every 1 second for live monitoring
+      scanInterval.current = setInterval(generateSensorDataFromBoeing, 1000); // Update every 1 second for live monitoring
     }
-    
+
     return () => {
       if (scanInterval.current) clearInterval(scanInterval.current);
     };
@@ -352,21 +352,28 @@ const SensorDataUI = () => {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Airbus Turbofan Engine Monitoring</h1>
-            <p className="text-lg text-gray-600 mt-2">Real-time analysis using advanced turbofan dataset with 21 authentic sensors</p>
+          <div className="flex items-center">
+            <img
+              src="/media/Boeing_logo.png"
+              alt="Boeing"
+              className="h-10 w-auto mr-6"
+            />
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Boeing Turbofan Engine Monitoring</h1>
+              <p className="text-lg text-gray-600 mt-2">Real-time analysis using advanced turbofan dataset with 21 authentic sensors</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setShowRawData(!showRawData)}
               className="gap-2"
             >
               <Terminal size={16} />
               Raw Data
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={downloadRawData}
               className="gap-2"
               title="Export sensor data as CSV file"
@@ -437,11 +444,10 @@ const SensorDataUI = () => {
                 {sensorData.slice(0, 12).map((sensor) => (
                   <div
                     key={sensor.id}
-                    className={`flex items-center justify-between py-3 px-4 rounded-lg border transition-all duration-300 ${
-                      sensor.status === 'critical' ? 'bg-red-50 border-red-200' : 
-                      sensor.status === 'warning' ? 'bg-yellow-50 border-yellow-200' : 
-                      'bg-gray-50 border-gray-200'
-                    }`}
+                    className={`flex items-center justify-between py-3 px-4 rounded-lg border transition-all duration-300 ${sensor.status === 'critical' ? 'bg-red-50 border-red-200' :
+                      sensor.status === 'warning' ? 'bg-yellow-50 border-yellow-200' :
+                        'bg-gray-50 border-gray-200'
+                      }`}
                   >
                     <div className="flex items-center gap-4">
                       <div className="min-w-0 flex-1">
@@ -492,16 +498,16 @@ const SensorDataUI = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis 
-                        dataKey="time" 
+                      <XAxis
+                        dataKey="time"
                         stroke="#6b7280"
                         fontSize={12}
                         interval="preserveStartEnd"
                       />
                       <YAxis stroke="#6b7280" fontSize={12} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: 'white', 
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: 'white',
                           border: '1px solid #e5e7eb',
                           borderRadius: '8px'
                         }}
@@ -591,10 +597,10 @@ const SensorDataUI = () => {
             </CardHeader>
             <CardContent>
               <div className="aspect-video rounded-lg overflow-hidden bg-gray-100 relative">
-                <video 
+                <video
                   className="w-full h-full object-cover"
-                  autoPlay 
-                  loop 
+                  autoPlay
+                  loop
                   muted
                   playsInline
                 >
@@ -635,7 +641,7 @@ const SensorDataUI = () => {
                 <CardTitle className="text-lg">AI Diagnostic Assistant</CardTitle>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <div className="h-96 overflow-y-auto">
                 {!showAgent ? (
@@ -652,9 +658,9 @@ const SensorDataUI = () => {
                       <div key={index} className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <p className="text-sm text-blue-900 leading-relaxed">{message.content}</p>
                         <p className="text-xs text-blue-600 mt-2">
-                          {message.timestamp.toLocaleTimeString([], { 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
+                          {message.timestamp.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
                           })}
                         </p>
                       </div>
@@ -662,7 +668,7 @@ const SensorDataUI = () => {
                   </div>
                 )}
               </div>
-              
+
               {showAgent && (
                 <div className="mt-4 pt-4 border-t">
                   <div className="flex gap-2">
